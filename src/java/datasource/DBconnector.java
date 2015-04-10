@@ -6,6 +6,7 @@
 package datasource;
 
 import java.beans.Statement;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,17 +24,24 @@ public class DBconnector {
 
     private static DBconnector instance = null;
 
-    private static Connection connection;
+    private Connection connection;
 
     private DBconnector() {
 
         try {
+            
+            Class.forName(driver);
+            
             connection = DriverManager.getConnection(URL, id, pw);
 
         } catch (SQLException ee) {
 
             System.out.println("Not connected");
 
+        }catch (ClassNotFoundException e){
+        
+        
+        
         }
 
         System.out.println("-------------------");
