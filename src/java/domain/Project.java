@@ -21,7 +21,17 @@ public class Project {
     int proStatus;
     int proSteps;
     int proFunds;
+    int proreqFunds;
 
+    public int getProreqFunds() {
+        return proreqFunds;
+    }
+
+    public void setProreqFunds(int proreqFunds) {
+        this.proreqFunds = proreqFunds;
+    }
+
+    
     public int getProID() {
         return proID;
     }

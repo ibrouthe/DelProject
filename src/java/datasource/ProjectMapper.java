@@ -40,15 +40,16 @@ public class ProjectMapper {
                 Project project = new Project();
 
                 project.setProID(rs.getInt(1));
-                project.setProEmpID(rs.getInt(2));
-                project.setProParID(rs.getInt(3));
-                project.setProName(rs.getString(4));
+                project.setProName(rs.getString(2));
+                project.setProEmpID(rs.getInt(3));
+                project.setProParID(rs.getInt(4));
                 project.setProStartDate(rs.getString(5));
                 project.setProEndDate(rs.getString(6));
                 project.setProPeo(rs.getString(7));
                 project.setProStatus(rs.getInt(8));
                 project.setProSteps(rs.getInt(9));
-                project.setProFunds(rs.getInt(10));
+                project.setProreqFunds(rs.getInt(10));
+                project.setProFunds(rs.getInt(11));
 
                 list.add(project);
 

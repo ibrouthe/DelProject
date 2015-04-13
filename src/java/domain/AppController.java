@@ -5,18 +5,26 @@
  */
 package domain;
 
+import datasource.DBconnector;
+import datasource.ProjectMapper;
+import java.util.ArrayList;
+
 /**
  *
  * @author Pc
  */
 public class AppController {
-    
-    public void listAllProjects(){
-    
-    
-    
+
+    public ArrayList listAllProjects() {
+
+        ProjectMapper mapper = new ProjectMapper();
+
+        ArrayList<Project> showlist;
+
+        showlist = mapper.listProject(DBconnector.getInstance().getConnection());
+
+        return showlist;
+        
     }
-    
-    
-  
+
 }

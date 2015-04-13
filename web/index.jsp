@@ -95,16 +95,29 @@
             <h3>Partners</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="#">Add New Partner</a></li>
-                <li class="icn_view_users"><a href="listPartners.jsp">View Partners</a></li>
+                <li class="icn_view_users"><a href="#">View Partners</a></li>
                 <li class="icn_folder"><a href="#">Search Partner</a></li>
             </ul>
+
+
             <h3>StatisticS</h3>
             <ul class="toggle">
                 <li class="icn_categories"><a href="#">Overview</a></li>
-                <li class="icn_folder"><a href="#">Projects</a></li>
+
+                <li class="icn_folder"><a href="\PageControl">Projects</a><input type="hidden" name="command" value="listProjects">
+                </li>
+
                 <li class="icn_view_users"><a href="#">Partners</a></li>
                 <li class="icn_folder"><a href="#">Funds</a></li>
             </ul>
+
+
+
+
+
+
+
+
             <h3>Admin</h3>
             <ul class="toggle">
                 <li class="icn_settings"><a href="#">Options</a></li>
@@ -123,11 +136,11 @@
 
             <h4 class="alert_info">7 projects have been edited since your last login.</h4>
 
-            
-            
-            
-            
-            
+
+
+
+
+
             <article class="module width_full">
                 <header><h3>Active projects</h3></header>
                 <div class="module_content">
@@ -136,17 +149,17 @@
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
+
+
+
             <article class="module width_full">
                 <header><h3>Stats</h3></header>
                 <div class="module_content">
@@ -174,17 +187,17 @@
                 </div>
             </article><!-- end of stats article -->
 
-            
 
-           
+
+
 
             <div class="clear"></div>
 
-            
 
 
 
-            
+
+
         </section>
 
 

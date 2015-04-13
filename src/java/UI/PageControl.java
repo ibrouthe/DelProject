@@ -8,6 +8,7 @@ package UI;
 
 import datasource.DBconnector;
 import datasource.ProjectMapper;
+import domain.AppController;
 import domain.Project;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "PageControl", urlPatterns = {"/PageControl"})
 public class PageControl extends HttpServlet {
 
+    AppController con;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,38 +39,33 @@ public class PageControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
 
-        try (PrintWriter out = response.getWriter()) {
+        con = new AppController();
 
-//
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet (PageControl.java)</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Printing all data from Project table</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String command = request.getParameter("command");
+        switch (command) {
+            case "listProjects":
+                listProjects(request, response, con);
+                break;
 
-            /*   Testkode til at skrive ud på webben       /Start            */
-            ProjectMapper mapper = new ProjectMapper();
-
-            ArrayList<Project> showlist;
-
-            showlist = mapper.listProject(DBconnector.getInstance().getConnection());
-
-            for (Project temp : showlist) {
-
-                out.println(temp.getProID() + "\t" + temp.getProEmpID() + "\t" + temp.getProParID() + "\t" + temp.getProName() + "\t" + temp.getProStartDate() + "\t" + temp.getProEndDate() + "\t" + temp.getProPeo() + "\t" + temp.getProStatus() + "\t" + temp.getProSteps() + "\t" + temp.getProFunds() + "\n");
-                out.println("</br>");
-
-            }
-
-            /*   Testkode til at skrive ud på webben       /Slut           */
         }
+
+    }
+
+    public void listProjects(HttpServletRequest request,HttpServletResponse response, AppController con) {
+
+        ArrayList<Project> showlist;
+
+        showlist = con.listAllProjects();
+        
+        request.getSession().setAttribute("ListenMedObjekter", showlist);
+
+        
+      
+        
+        
+     
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
