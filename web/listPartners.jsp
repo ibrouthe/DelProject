@@ -95,8 +95,8 @@
             <h3>Partners</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="#">Add New Partner</a></li>
-                <li class="icn_view_users"><a href="listPartners.jsp">View Partners</a></li>
-                <li class="icn_folder"><a href="#">Search Partner</a></li>
+                <li class="icn_view_users"><a href="#">View Partners</a></li>
+                <li class="icn_profile"><a href="#">Search Partner</a></li>
             </ul>
             <h3>StatisticS</h3>
             <ul class="toggle">
@@ -131,8 +131,9 @@
             <article class="module width_full">
                 <header><h3>Active projects</h3></header>
                 <div class="module_content">
-                    <p>Nothing listed yet<p>
-
+             
+      <p>Listing all projects in database<p>
+                <p>Listing all projects in database<p>
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>

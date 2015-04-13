@@ -7,19 +7,9 @@ package datasource;
 
 /**
  *
- * @author Pc
+ * @Gruppe 2 Silas, Thomas, Christian, Martin, Ib
  */
 public class DBfacade {
 
-  
-    public static void main(String[] args) {
-
-        ProjectMapper mapper = new ProjectMapper();
-
-        System.out.println(mapper.lookUp("Will Smith", DBconnector.getInstance().getConnection()));
-
-       
-    }
-    
-
+   
 }

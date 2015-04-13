@@ -11,6 +11,12 @@ package domain;
  */
 public class AppController {
     
+    public void listAllProjects(){
+    
+    
+    
+    }
+    
     
   
 }

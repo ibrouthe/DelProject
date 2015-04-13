@@ -1,19 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Object that handles the connection to the database
+ * Singleton class - only 1 instance of this class pr user
  */
 package datasource;
 
-import java.beans.Statement;
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
  *
- * @author Pc
+ * @Gruppe 2 Silas, Thomas, Christian, Martin, Ib
  */
 public class DBconnector {
 
@@ -29,22 +26,18 @@ public class DBconnector {
     private DBconnector() {
 
         try {
-            
+
             Class.forName(driver);
-            
+
             connection = DriverManager.getConnection(URL, id, pw);
 
         } catch (SQLException ee) {
 
-            System.out.println("Not connected");
+            System.out.println("DellBOT: SQL exception in DBconnector contructor. You are not connected");
 
-        }catch (ClassNotFoundException e){
-        
-        
-        
+        } catch (ClassNotFoundException e) {
+
         }
-
-        System.out.println("-------------------");
 
     }
 
