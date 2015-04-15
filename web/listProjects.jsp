@@ -4,6 +4,8 @@
     Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="domain.Project"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "UI.PageControl"%>
 
@@ -123,31 +125,47 @@
 
             <h4 class="alert_info">7 projects have been edited since your last login.</h4>
 
-            
-            
-            
-            
-            
+
+
+
+
+
             <article class="module width_full">
                 <header><h3>Active projects</h3></header>
                 <div class="module_content">
-             
-      <p>Listing all projects in database<p>
-                <p>Listing all projects in database<p>
+
+                    <% ArrayList<Project> newlist = new ArrayList();
+
+                        newlist = (ArrayList<Project>) session.getAttribute("returnlist");
+
+                        for (Project temp : newlist) {
+
+                            out.println(temp.getProName());
+                            out.println("\n");
+                            out.println("<br>");
+
+                        }
+
+
+                    %>
+
+
+                    <p>Listing all projects in database<p>
+                    <p>Listing all projects in database<p>
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
+
+
+
+
+
+
+
+
+
+
             <article class="module width_full">
                 <header><h3>Stats</h3></header>
                 <div class="module_content">
@@ -175,17 +193,17 @@
                 </div>
             </article><!-- end of stats article -->
 
-            
 
-           
+
+
 
             <div class="clear"></div>
 
-            
 
 
 
-            
+
+
         </section>
 
 

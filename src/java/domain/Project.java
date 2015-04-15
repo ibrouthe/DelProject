@@ -20,18 +20,42 @@ public class Project {
     String proPeo;
     int proStatus;
     int proSteps;
+    int proReqFunds;
     int proFunds;
-    int proreqFunds;
 
-    public int getProreqFunds() {
-        return proreqFunds;
-    }
-
-    public void setProreqFunds(int proreqFunds) {
-        this.proreqFunds = proreqFunds;
-    }
-
+    public Project(){
     
+    
+    }
+    
+    
+    public Project(int proID, int proEmpID, int proParID, String proName, String proStartDate, String proEndDate, int proReqFunds) {
+        this.proID = proID;
+        this.proEmpID = proEmpID;
+        this.proParID = proParID;
+        this.proName = proName;
+        this.proStartDate = proStartDate;
+        this.proEndDate = proEndDate;
+        this.proReqFunds = proReqFunds;
+    }
+
+    public Project(int proID, int proEmpID, int proParID, String proName, String proStartDate, String proEndDate, String proPeo, int proStatus, int proSteps, int proReqFunds, int proFunds) {
+        this.proID = proID;
+        this.proEmpID = proEmpID;
+        this.proParID = proParID;
+        this.proName = proName;
+        this.proStartDate = proStartDate;
+        this.proEndDate = proEndDate;
+        this.proPeo = proPeo;
+        this.proStatus = proStatus;
+        this.proSteps = proSteps;
+        this.proReqFunds = proReqFunds;
+        this.proFunds = proFunds;
+    }
+    
+    
+    
+
     public int getProID() {
         return proID;
     }
@@ -110,6 +134,14 @@ public class Project {
 
     public void setProFunds(int proFunds) {
         this.proFunds = proFunds;
+    }
+
+    public int getProReqFunds() {
+        return proReqFunds;
+    }
+
+    public void setProReqFunds(int proReqFunds) {
+        this.proReqFunds = proReqFunds;
     }
 
 }

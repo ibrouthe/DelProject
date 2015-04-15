@@ -6,6 +6,8 @@
 package UI;
 //
 
+import Interfacees.Interface;
+import datasource.Authservice;
 import datasource.DBconnector;
 import datasource.ProjectMapper;
 import domain.AppController;
@@ -18,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -26,8 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "PageControl", urlPatterns = {"/PageControl"})
 public class PageControl extends HttpServlet {
 
-    AppController con;
-
+    AppController appcon;
+    Interface auth;
+       
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,31 +44,80 @@ public class PageControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        con = new AppController();
-
+        appcon = new AppController();
+        auth = new Authservice();
+        
         String command = request.getParameter("command");
+
         switch (command) {
             case "listProjects":
-                listProjects(request, response, con);
+
+                ArrayList<Project> showlist;
+
+                showlist = appcon.listAllProjects();
+
+                HttpSession session = request.getSession();
+                session.setAttribute("returnlist", showlist);
+
+                try {
+                    response.sendRedirect("listProjects.jsp");
+                } catch (Exception ee) {
+
+                }
+
                 break;
+            case "projectForm":
+                System.out.println("VI ER I CASE PROJECTFORM");
+                
+                request.getSession().setAttribute("message", "you have created a project succesfully");
+                
+                int proID = 20611116;
+                String proName = request.getParameter("proName");
+                int proEmpID = request.getIntHeader("proEmpID");
+             
+               
+                int proParID = request.getIntHeader("proParID");
+                String proStartDate = request.getParameter("proStartDate");
+               
+                
+                String proEndDate = request.getParameter("proEndDate");
+                String proPOE = request.getParameter("proPOE");
+                int proStatus = request.getIntHeader("proStatus");
+                int proSteps = request.getIntHeader("proSteps");
+                int proReqFunds = request.getIntHeader("proReqFunds");
+                int proFunds = request.getIntHeader("proFunds");
+                
+
+                boolean aPro = auth.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
+                if (aPro) {
+                    response.sendRedirect("index.jsp");
+                } else {
+                    response.sendRedirect("newProjektForm.jsp");
+                }
+                return;
 
         }
 
     }
 
-    public void listProjects(HttpServletRequest request,HttpServletResponse response, AppController con) {
+    public void listProjects(HttpServletRequest request, HttpServletResponse response, AppController appcon) {
 
         ArrayList<Project> showlist;
 
-        showlist = con.listAllProjects();
-        
-        request.getSession().setAttribute("ListenMedObjekter", showlist);
+        showlist = appcon.listAllProjects();
 
-        
-      
-        
-        
-     
+        HttpSession command = request.getSession();
+        command.setAttribute("ListenMedObjekter", showlist);
+
+        for (Project john : showlist) {
+            System.out.println(john.getProName());
+        }
+
+        try {
+            response.sendRedirect("listProjects.jsp");
+        } catch (Exception ee) {
+
+        }
 
     }
 

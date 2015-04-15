@@ -14,10 +14,59 @@ public class Partner {
     int parID;
     String parName;
     String parAdress;
-    int parZIP;
-    String parCity;
-    int parPhone;
+    String parPhone;
     String eMail;
+    String CVR;
+    String parPass;
+    int parFunds;
+
+    public Partner(int parID, String parName, String parAdress, String parPhone, String eMail, String CVR, String parPass, int parFunds) {
+	this.parID = parID;
+	this.parName = parName;
+	this.parAdress = parAdress;
+	this.parPhone = parPhone;
+	this.eMail = eMail;
+	this.CVR = CVR;
+	this.parPass = parPass;
+	this.parFunds = parFunds;
+    }
+
+    public String getParPhone() {
+	return parPhone;
+    }
+
+    public void setParPhone(String parPhone) {
+	this.parPhone = parPhone;
+    }
+
+    public String getCVR() {
+	return CVR;
+    }
+
+    public void setCVR(String CVR) {
+	this.CVR = CVR;
+    }
+
+   
+    public int getParFunds() {
+	return parFunds;
+    }
+
+    public void setParFunds(int parFunds) {
+	this.parFunds = parFunds;
+    }
+
+    
+    public String getParPass() {
+	return parPass;
+    }
+
+    public void setParPass(String parPass) {
+	this.parPass = parPass;
+    }
+
+    public Partner() {
+    }
 
     public int getParID() {
         return parID;
@@ -43,30 +92,7 @@ public class Partner {
         this.parAdress = parAdress;
     }
 
-    public int getParZIP() {
-        return parZIP;
-    }
-
-    public void setParZIP(int parZIP) {
-        this.parZIP = parZIP;
-    }
-
-    public String getParCity() {
-        return parCity;
-    }
-
-    public void setParCity(String parCity) {
-        this.parCity = parCity;
-    }
-
-    public int getParPhone() {
-        return parPhone;
-    }
-
-    public void setParPhone(int parPhone) {
-        this.parPhone = parPhone;
-    }
-
+    
     public String geteMail() {
         return eMail;
     }

@@ -89,7 +89,7 @@
             <hr/>
             <h3>Projects</h3>
             <ul class="toggle">
-                <li class="icn_new_article"><a href="#">New Project</a></li>
+                <li class="icn_new_article"><a href="newProjektForm.jsp">Projects</a></li>
                 <li class="icn_edit_article"><a href="#">Edit Project</a></li>
             </ul>
             <h3>Partners</h3>
@@ -104,10 +104,10 @@
             <ul class="toggle">
                 <li class="icn_categories"><a href="#">Overview</a></li>
 
-                <li class="icn_folder"><a href="\PageControl">Projects</a><input type="hidden" name="command" value="listProjects">
-                </li>
-
-                <li class="icn_view_users"><a href="#">Partners</a></li>
+                <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">Projects</a><input type="hidden" name="command" value="listProjects"></li>
+                
+                                
+                <li class="icn_view_users"><a href="listProjects.jsp">Partners</a></li>
                 <li class="icn_folder"><a href="#">Funds</a></li>
             </ul>
 
