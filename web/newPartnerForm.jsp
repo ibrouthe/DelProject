@@ -78,9 +78,9 @@
             <p>Password:</p><input type="text" name="parPass" value="" size="50" />
             <p>Email:</p><input type="text" name="eMail" value="" size="50" />
             <p>CVR:</p><input type="text" name="CVR" value="" size="50" />
-            <input type="hidden" name="origin" value="partnerForm" />
+            <input type="hidden" name="command" value="partnerForm" />
             <br><br>
-            <input type="submit" value="Submit" name="partnersubmit" />
+            <input type="submit" value="Submit" name="partnersubmit"/>
         </form>
         </div>
     </body>

@@ -126,7 +126,7 @@ public class Authservice implements Interface {
                 Class.forName(driver);
                 connection = java.sql.DriverManager.getConnection(URL, username, password);
                 statement = connection.prepareStatement(sql);
-                statement.setInt(1, 7677);
+                statement.setInt(1, 77);
                 statement.setInt(2, pro.getProEmpID());
                 statement.setInt(3, pro.getProParID());
                 statement.setString(4, pro.getProName());

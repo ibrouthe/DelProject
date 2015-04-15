@@ -27,4 +27,18 @@ public class AppController {
         
     }
 
+       public ArrayList listAllPartners() {
+
+        ProjectMapper mapper = new ProjectMapper();
+
+        ArrayList<Partner> showlist;
+
+        showlist = mapper.listPartner(DBconnector.getInstance().getConnection());
+
+        return showlist;
+        
+    }
+
+    
+    
 }

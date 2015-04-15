@@ -94,7 +94,7 @@
             </ul>
             <h3>Partners</h3>
             <ul class="toggle">
-                <li class="icn_add_user"><a href="#">Add New Partner</a></li>
+                <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
                 <li class="icn_view_users"><a href="#">View Partners</a></li>
                 <li class="icn_folder"><a href="#">Search Partner</a></li>
             </ul>
@@ -106,8 +106,9 @@
 
                 <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">Projects</a><input type="hidden" name="command" value="listProjects"></li>
                 
-                                
-                <li class="icn_view_users"><a href="listProjects.jsp">Partners</a></li>
+                 <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listPartners">Partners</a><input type="hidden" name="command" value="listPartners"></li>
+                 
+                
                 <li class="icn_folder"><a href="#">Funds</a></li>
             </ul>
 

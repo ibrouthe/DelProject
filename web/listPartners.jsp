@@ -4,6 +4,7 @@
     Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
 --%>
 
+<%@page import="domain.Partner"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="domain.Project"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -131,29 +132,26 @@
 
 
             <article class="module width_full">
-                <header><h3>Projects in Database</h3></header>
+                <header><h3>Partners in Database</h3></header>
                 <div class="module_content">
 
+                    <% ArrayList<Partner> newlist = new ArrayList();
 
-                    
+                        newlist = (ArrayList<Partner>) session.getAttribute("returnpartnerlist");
 
-                    <% ArrayList<Project> newlist = new ArrayList();
+                        for (Partner temp : newlist) {
 
-                        newlist = (ArrayList<Project>) session.getAttribute("returnlist");
-                        
-                        for (Project temp : newlist) {
+                            out.println(temp.getParName());
+                            out.println("\n");
+                            out.println("<br>");
 
-                        out.print(temp.getProName());
-                
-                out.println("<br>");
-
-            }
+                        }
 
 
                     %>
 
 
-
+                
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>

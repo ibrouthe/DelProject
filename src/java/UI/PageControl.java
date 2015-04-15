@@ -11,6 +11,7 @@ import datasource.Authservice;
 import datasource.DBconnector;
 import datasource.ProjectMapper;
 import domain.AppController;
+import domain.Partner;
 import domain.Project;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,6 +32,7 @@ public class PageControl extends HttpServlet {
 
     AppController appcon;
     Interface auth;
+    HttpSession session;
        
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,6 +49,7 @@ public class PageControl extends HttpServlet {
         appcon = new AppController();
         auth = new Authservice();
         
+        
         String command = request.getParameter("command");
 
         switch (command) {
@@ -56,7 +59,7 @@ public class PageControl extends HttpServlet {
 
                 showlist = appcon.listAllProjects();
 
-                HttpSession session = request.getSession();
+                session = request.getSession();
                 session.setAttribute("returnlist", showlist);
 
                 try {
@@ -66,6 +69,46 @@ public class PageControl extends HttpServlet {
                 }
 
                 break;
+                
+                
+                 case "listPartners":
+
+                ArrayList<Partner> showpartnerlist;
+
+                showpartnerlist = appcon.listAllPartners();
+
+                session = request.getSession();
+                session.setAttribute("returnpartnerlist", showpartnerlist);
+
+                try {
+                    response.sendRedirect("listPartners.jsp");
+                } catch (Exception ee) {
+
+                }
+
+                break;
+                
+                 case "partnerForm":
+                     
+                     System.out.println("VI ER I partner CASE");
+                    request.getSession().setAttribute("message", "you have registrated succesfully");
+                    int parId = 20656765;
+                    String parName = request.getParameter("parName");
+                    String parAdress = request.getParameter("parAdress");
+                    String parPhone = request.getParameter("parPhone");
+                    String parPass = request.getParameter("parPass");
+                    String eMail = request.getParameter("eMail");
+                    String CVR = request.getParameter("CVR");
+                    int parFunds = 0;
+                    boolean ap = auth.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+                    System.out.println(ap);
+                    if (ap) {
+                        response.sendRedirect("index.jsp");
+                    } else {
+                        response.sendRedirect("newPartnerForm.jsp");
+                    }
+                    return;
+                
             case "projectForm":
                 System.out.println("VI ER I CASE PROJECTFORM");
                 
