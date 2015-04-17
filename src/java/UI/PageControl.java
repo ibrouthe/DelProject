@@ -33,7 +33,7 @@ public class PageControl extends HttpServlet {
     AppController appcon;
     Interface auth;
     HttpSession session;
-       
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,8 +48,7 @@ public class PageControl extends HttpServlet {
 
         appcon = new AppController();
         auth = new Authservice();
-        
-        
+
         String command = request.getParameter("command");
 
         switch (command) {
@@ -69,9 +68,8 @@ public class PageControl extends HttpServlet {
                 }
 
                 break;
-                
-                
-                 case "listPartners":
+
+            case "listPartners":
 
                 ArrayList<Partner> showpartnerlist;
 
@@ -87,49 +85,47 @@ public class PageControl extends HttpServlet {
                 }
 
                 break;
-                
-                 case "partnerForm":
-                     
-                     System.out.println("VI ER I partner CASE");
-                    request.getSession().setAttribute("message", "you have registrated succesfully");
-                    int parId = 20656765;
-                    String parName = request.getParameter("parName");
-                    String parAdress = request.getParameter("parAdress");
-                    String parPhone = request.getParameter("parPhone");
-                    String parPass = request.getParameter("parPass");
-                    String eMail = request.getParameter("eMail");
-                    String CVR = request.getParameter("CVR");
-                    int parFunds = 0;
-                    boolean ap = auth.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
-                    System.out.println(ap);
-                    if (ap) {
-                        response.sendRedirect("index.jsp");
-                    } else {
-                        response.sendRedirect("newPartnerForm.jsp");
-                    }
-                    return;
-                
+
+            case "partnerForm":
+
+           
+                request.getSession().setAttribute("message", "you have registrated succesfully");
+                int parId = 20955; // Dummy input
+                String parName = request.getParameter("parName");
+                String parAdress = request.getParameter("parAdress");
+                String parPhone = request.getParameter("parPhone");
+                String parPass = request.getParameter("parPass");
+                String eMail = request.getParameter("eMail");
+                String CVR = request.getParameter("CVR");
+                int parFunds = 0; // Dummy input
+                boolean ap = auth.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+                if (ap) {
+                    response.sendRedirect("index.jsp");
+                } else {
+                    response.sendRedirect("newPartnerForm.jsp");
+                }
+                return;
+
             case "projectForm":
                 System.out.println("VI ER I CASE PROJECTFORM");
-                
+
                 request.getSession().setAttribute("message", "you have created a project succesfully");
-                
-                int proID = 20611116;
+
+                int proID = 061141661; //Dummy input                
+                int proEmpID = Integer.parseInt(request.getParameter("proEmpID"));
+                int proParID = Integer.parseInt(request.getParameter("proParID"));
                 String proName = request.getParameter("proName");
-                int proEmpID = request.getIntHeader("proEmpID");
-             
-               
-                int proParID = request.getIntHeader("proParID");
                 String proStartDate = request.getParameter("proStartDate");
-               
-                
                 String proEndDate = request.getParameter("proEndDate");
-                String proPOE = request.getParameter("proPOE");
-                int proStatus = request.getIntHeader("proStatus");
-                int proSteps = request.getIntHeader("proSteps");
-                int proReqFunds = request.getIntHeader("proReqFunds");
-                int proFunds = request.getIntHeader("proFunds");
+                String proPOE = "This is a proPOE"; //Dummy input
+                int proStatus = 0; //Dummy input
+                int proSteps = 1; //Dummy input
+                int proReqFunds = Integer.parseInt(request.getParameter("proReqFunds"));
+                int proFunds = 5000; //Dummy input
                 
+                System.out.println("proStatus: " + proStatus + " proID: " + proID + " proParID: " + proParID + " proEmpID: " + proEmpID + " proStartDate: " + proStartDate);
+                System.out.println("proEndDate: " + proEndDate + " proPOE " + proPOE + " proName: " + proName + " proSteps: " + proSteps);
+                System.out.println("proReqFunds: " + proReqFunds + " proFunds: " + proFunds);
 
                 boolean aPro = auth.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
                 if (aPro) {

@@ -1,5 +1,5 @@
 <%-- 
-    Document   : index
+    Document   : List Partners
     Created on : 08-04-2015, 02:15:23
     Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
 --%>
@@ -62,7 +62,7 @@
     </head>
 
 
-    <body>
+<body>
 
         <header id="header">
             <hgroup>
@@ -92,29 +92,39 @@
             <hr/>
             <h3>Projects</h3>
             <ul class="toggle">
-                <li class="icn_new_article"><a href="#">New Project</a></li>
-                <li class="icn_edit_article"><a href="#">Edit Project</a></li>
+                <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
+                 <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
             </ul>
             <h3>Partners</h3>
             <ul class="toggle">
-                <li class="icn_add_user"><a href="#">Add New Partner</a></li>
-                <li class="icn_view_users"><a href="#">View Partners</a></li>
-                <li class="icn_profile"><a href="#">Search Partner</a></li>
-            </ul>
-            <h3>StatisticS</h3>
-            <ul class="toggle">
-                <li class="icn_categories"><a href="#">Overview</a></li>
-                <li class="icn_folder"><a href="#">Projects</a></li>
-                <li class="icn_view_users"><a href="#">Partners</a></li>
-                <li class="icn_folder"><a href="#">Funds</a></li>
-            </ul>
-            <h3>Admin</h3>
-            <ul class="toggle">
-                <li class="icn_settings"><a href="#">Options</a></li>
-                <li class="icn_security"><a href="#">Security</a></li>
-                <li class="icn_jump_back"><a href="#">Logout</a></li>
+                <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
+                 <li class="icn_profile"><a href="http://localhost:8080/Dell/PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
+           
             </ul>
 
+
+            <h3>StatisticS</h3>
+            <ul class="toggle">
+               
+                
+                
+                
+            </ul>
+
+
+
+
+
+
+
+
+            <h3>Admin</h3>
+            <ul class="toggle">
+                
+            </ul>
+
+           
+            
             <footer>
                 <hr />
                 <p><strong>Datamatiker 2. semesteropgave Gruppe 2</strong></p>

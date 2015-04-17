@@ -89,27 +89,23 @@
             <hr/>
             <h3>Projects</h3>
             <ul class="toggle">
-                <li class="icn_new_article"><a href="newProjektForm.jsp">Projects</a></li>
-                <li class="icn_edit_article"><a href="#">Edit Project</a></li>
+                <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
+                 <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
             </ul>
             <h3>Partners</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
-                <li class="icn_view_users"><a href="#">View Partners</a></li>
-                <li class="icn_folder"><a href="#">Search Partner</a></li>
+                 <li class="icn_profile"><a href="http://localhost:8080/Dell/PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
+           
             </ul>
 
 
             <h3>StatisticS</h3>
             <ul class="toggle">
-                <li class="icn_categories"><a href="#">Overview</a></li>
-
-                <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">Projects</a><input type="hidden" name="command" value="listProjects"></li>
+               
                 
-                 <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listPartners">Partners</a><input type="hidden" name="command" value="listPartners"></li>
-                 
                 
-                <li class="icn_folder"><a href="#">Funds</a></li>
+                
             </ul>
 
 
@@ -121,11 +117,11 @@
 
             <h3>Admin</h3>
             <ul class="toggle">
-                <li class="icn_settings"><a href="#">Options</a></li>
-                <li class="icn_security"><a href="#">Security</a></li>
-                <li class="icn_jump_back"><a href="#">Logout</a></li>
+                
             </ul>
 
+           
+            
             <footer>
                 <hr />
                 <p><strong>Datamatiker 2. semesteropgave Gruppe 2</strong></p>
@@ -150,13 +146,6 @@
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>
-
-
-
-
-
-
-
 
 
 

@@ -69,14 +69,14 @@ public class Authservice implements Interface {
                 Class.forName(driver);
                 connection = java.sql.DriverManager.getConnection(URL, username, password);
                 statement = connection.prepareStatement(sql);
-                statement.setInt(1, 64111);
+                statement.setInt(1, p.getParID()); //Får dummy input fra pageControl
                 statement.setString(2, p.getParName());
                 statement.setString(3, p.getParAdress());
                 statement.setString(4, p.getParPhone());
-                statement.setString(5, "poelse@mad.dk");
-                statement.setString(6, "65461846");
-                statement.setString(7, "skdjhfsiu");
-                statement.setInt(8, 0);
+                statement.setString(5, p.geteMail());
+                statement.setString(6, p.getCVR());
+                statement.setString(7, p.getParPass());
+                statement.setInt(8, p.getParFunds()); //Får dummy input fra pageControl
 
 //		System.out.println( p.getParID()+ " " + p.getParName()+ " " + p.getParAdress()+ " " +p.getParPhone() 
 //			+ " " +p.geteMail()+ " " + p.getCVR()+ " " +p.getParPass());
@@ -126,17 +126,17 @@ public class Authservice implements Interface {
                 Class.forName(driver);
                 connection = java.sql.DriverManager.getConnection(URL, username, password);
                 statement = connection.prepareStatement(sql);
-                statement.setInt(1, 77);
+                statement.setInt(1, pro.getProID()); //Får dummy input fra pageControl
                 statement.setInt(2, pro.getProEmpID());
                 statement.setInt(3, pro.getProParID());
                 statement.setString(4, pro.getProName());
                 statement.setString(5, pro.getProStartDate());
                 statement.setString(6, pro.getProEndDate());
-                statement.setString(7, "DetteErPOE_01");
-                statement.setInt(8, pro.getProStatus());
-                statement.setInt(9, pro.getProSteps());
+                statement.setString(7, pro.getProPeo()); //Får dummy input fra pageControl
+                statement.setInt(8, pro.getProStatus()); //Får dummy input fra pageControl
+                statement.setInt(9, pro.getProSteps()); //Får dummy input fra pageControl
                 statement.setInt(10, pro.getProReqFunds());
-                statement.setInt(11, 0);
+                statement.setInt(11, pro.getProFunds()); //Får dummy input fra pageControl
 
 //		System.out.println( p.getParID()+ " " + p.getParName()+ " " + p.getParAdress()+ " " +p.getParPhone() 
 //			+ " " +p.geteMail()+ " " + p.getCVR()+ " " +p.getParPass());
