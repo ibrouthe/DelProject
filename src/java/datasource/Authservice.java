@@ -123,7 +123,7 @@ public class Authservice implements Interface {
             String sql = "INSERT INTO PROJECT VALUES(?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement statement = null;
             try {
-                Class.forName(driver);
+                Class.forName(driver);                                                      // retttes til at bruge dbconnector
                 connection = java.sql.DriverManager.getConnection(URL, username, password);
                 statement = connection.prepareStatement(sql);
                 statement.setInt(1, pro.getProID()); //Får dummy input fra pageControl

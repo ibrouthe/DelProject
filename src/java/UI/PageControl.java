@@ -90,7 +90,7 @@ public class PageControl extends HttpServlet {
 
            
                 request.getSession().setAttribute("message", "you have registrated succesfully");
-                int parId = 20955; // Dummy input
+                int parId = 268505; // Dummy input
                 String parName = request.getParameter("parName");
                 String parAdress = request.getParameter("parAdress");
                 String parPhone = request.getParameter("parPhone");
@@ -107,11 +107,11 @@ public class PageControl extends HttpServlet {
                 return;
 
             case "projectForm":
-                System.out.println("VI ER I CASE PROJECTFORM");
+              
 
                 request.getSession().setAttribute("message", "you have created a project succesfully");
 
-                int proID = 061141661; //Dummy input                
+                int proID = 30611; //Dummy input                
                 int proEmpID = Integer.parseInt(request.getParameter("proEmpID"));
                 int proParID = Integer.parseInt(request.getParameter("proParID"));
                 String proName = request.getParameter("proName");
@@ -124,7 +124,7 @@ public class PageControl extends HttpServlet {
                 int proFunds = 5000; //Dummy input
                 
                 System.out.println("proStatus: " + proStatus + " proID: " + proID + " proParID: " + proParID + " proEmpID: " + proEmpID + " proStartDate: " + proStartDate);
-                System.out.println("proEndDate: " + proEndDate + " proPOE " + proPOE + " proName: " + proName + " proSteps: " + proSteps);
+                System.out.println("proEndDate: " + proEndDate + " proPOE: " + proPOE + " proName: " + proName + " proSteps: " + proSteps);
                 System.out.println("proReqFunds: " + proReqFunds + " proFunds: " + proFunds);
 
                 boolean aPro = auth.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
