@@ -6,15 +6,10 @@
 package UI;
 //
 
-import Interfacees.Interface;
-import datasource.Authservice;
-import datasource.DBconnector;
-import datasource.ProjectMapper;
 import domain.AppController;
 import domain.Partner;
 import domain.Project;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,7 +26,7 @@ import javax.servlet.http.HttpSession;
 public class PageControl extends HttpServlet {
 
     AppController appcon;
-    Interface auth;
+
     HttpSession session;
 
     /**
@@ -47,7 +42,6 @@ public class PageControl extends HttpServlet {
             throws ServletException, IOException {
 
         appcon = new AppController();
-        auth = new Authservice();
 
         String command = request.getParameter("command");
 
@@ -88,7 +82,6 @@ public class PageControl extends HttpServlet {
 
             case "partnerForm":
 
-           
                 request.getSession().setAttribute("message", "you have registrated succesfully");
                 int parId = 268505; // Dummy input
                 String parName = request.getParameter("parName");
@@ -98,7 +91,8 @@ public class PageControl extends HttpServlet {
                 String eMail = request.getParameter("eMail");
                 String CVR = request.getParameter("CVR");
                 int parFunds = 0; // Dummy input
-                boolean ap = auth.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+
+                boolean ap = appcon.createNewPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
                 if (ap) {
                     response.sendRedirect("index.jsp");
                 } else {
@@ -107,7 +101,6 @@ public class PageControl extends HttpServlet {
                 return;
 
             case "projectForm":
-              
 
                 request.getSession().setAttribute("message", "you have created a project succesfully");
 
@@ -122,39 +115,14 @@ public class PageControl extends HttpServlet {
                 int proSteps = 1; //Dummy input
                 int proReqFunds = Integer.parseInt(request.getParameter("proReqFunds"));
                 int proFunds = 5000; //Dummy input
-                
-                System.out.println("proStatus: " + proStatus + " proID: " + proID + " proParID: " + proParID + " proEmpID: " + proEmpID + " proStartDate: " + proStartDate);
-                System.out.println("proEndDate: " + proEndDate + " proPOE: " + proPOE + " proName: " + proName + " proSteps: " + proSteps);
-                System.out.println("proReqFunds: " + proReqFunds + " proFunds: " + proFunds);
 
-                boolean aPro = auth.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
+                boolean aPro = appcon.createNewProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
                 if (aPro) {
                     response.sendRedirect("index.jsp");
                 } else {
                     response.sendRedirect("newProjektForm.jsp");
                 }
                 return;
-
-        }
-
-    }
-
-    public void listProjects(HttpServletRequest request, HttpServletResponse response, AppController appcon) {
-
-        ArrayList<Project> showlist;
-
-        showlist = appcon.listAllProjects();
-
-        HttpSession command = request.getSession();
-        command.setAttribute("ListenMedObjekter", showlist);
-
-        for (Project john : showlist) {
-            System.out.println(john.getProName());
-        }
-
-        try {
-            response.sendRedirect("listProjects.jsp");
-        } catch (Exception ee) {
 
         }
 

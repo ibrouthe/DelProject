@@ -1,0 +1,37 @@
+Partner interface
+Project interface
+Ændre sti på git og eget path
+
+
+
+
+
+
+
+LAYERS OG FORKLARING HERTIL
+
+
+Eksempel        Type                    Bruges til
+-------------------------------------------------------------------------------------------------------
+index.jsp       JSP view                Vise text til bruger med det input der kommer fra Servlet via
+                                        request og response objektet.
+
+PageControl     Servlet                 Håndterer kommunikation og data mellem jsp view og javacode.
+                                        Dette gøres ved at kalde metoder i AppControl.
+
+AppControl      Java klasse             Controlleren. Har alle methoder der bruges af PageControl. Skal
+                                        der ændres i databasen, kaldes den samme metode i UnitOfWork der
+                                        igen først registrerer objekterne, derefter kalder datamapper der
+                                        ændrer selve DB. Den returnerer TRUE til UnitOfWork der sletter
+                                        registreringen og giver ok meddelelse til bruger. Ved FALSE slettes
+                                        registrering og der gives meddelelse herom.
+
+UnitOfWork      Java klasse             Registrerer alle objekter der skal manipuleres i DB. Det er her der laves
+                                        RollBack hvis nødvendigt. 
+
+ProjectMapper   Java klasse             Her oversættes objekter til SQL kode og tilbage. Det er kun mapper klasserne der
+                                        bruger DBconnection.
+
+cphir17         Database                Selve data i tabelform.
+                                                                                  
+                                      
