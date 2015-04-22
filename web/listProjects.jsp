@@ -1,7 +1,7 @@
 <%-- 
-    Document   : List Projects
-    Created on : 08-04-2015, 02:15:23
-    Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
+        Document   : List Projects
+        Created on : 08-04-2015, 02:15:23
+        Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
 --%>
 
 <%@page import="java.util.ArrayList"%>
@@ -60,8 +60,7 @@
 
     </head>
 
-
-<body>
+    <body>
 
         <header id="header">
             <hgroup>
@@ -76,54 +75,41 @@
                 <!-- <a class="logout_user" href="#" title="Logout">Logout</a> -->
             </div>
             <div class="breadcrumbs_container">
-                <article class="breadcrumbs"><a href="index.html">Home</a> <div class="breadcrumb_divider"></div> <a class="current">Dashboard</a></article>
+                <article class="breadcrumbs"><a href="index.jsp">Home</a> <div class="breadcrumb_divider"></div> <a class="current">Dashboard</a></article>
             </div>
         </section><!-- end of secondary bar -->
 
         <aside id="sidebar" class="column">
             <form class="quick_search">
                 <input type="text" value="Quick Search" onfocus="if (!this._haschanged) {
-                            this.value = ''
-                        }
-                        ;
-                        this._haschanged = true;">
+                                this.value = ''
+                            }
+                            ;
+                            this._haschanged = true;">
             </form>
             <hr/>
             <h3>Projects</h3>
             <ul class="toggle">
                 <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
-                 <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
+                <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
             </ul>
             <h3>Partners</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
-                 <li class="icn_profile"><a href="http://localhost:8080/Dell/PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
-           
-            </ul>
+                <li class="icn_profile"><a href="http://localhost:8080/Dell/PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
 
+            </ul>
 
             <h3>StatisticS</h3>
             <ul class="toggle">
-               
-                
-                
-                
+
             </ul>
-
-
-
-
-
-
-
 
             <h3>Admin</h3>
             <ul class="toggle">
-                
+
             </ul>
 
-           
-            
             <footer>
                 <hr />
                 <p><strong>Datamatiker 2. semesteropgave Gruppe 2</strong></p>
@@ -135,48 +121,44 @@
 
             <h4 class="alert_info">7 projects have been edited since your last login.</h4>
 
-
-
-
-
-
             <article class="module width_full">
                 <header><h3>Projects in Database</h3></header>
                 <div class="module_content">
 
-
-                    
-
                     <% ArrayList<Project> newlist = new ArrayList();
 
                         newlist = (ArrayList<Project>) session.getAttribute("returnlist");
-                        
-                        for (Project temp : newlist) {
+                    %><table  border="1" width="850"> <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>ID    </th> 
+                                <th>Name      </th> 
+                                <th>Start Date</th> 
+                                <th>End Date  </th>
+                                <th>Step  </th>
+                                <th>Status</th>
+                            </tr> 
+                        </thead> <tbody>
 
-                        out.print(temp.getProName());
-                
-                out.println("<br>");
-
-            }
-
-
-                    %>
-
+                            <%
+                                for (Project temp : newlist) {
+                            %>
+                            <tr>
+                                <td><a href="http://localhost:8080/Dell/PageControl?command=selectedProject&param1=<%out.print(temp.getProID());%>">View Project</a></td> 
+                                <%//System.out.println(temp.getProID());%>
+                                <td><%out.print(temp.getProID());%></td> 
+                                <td><%out.print(temp.getProName());%></td> 
+                                <td><%out.print(temp.getProStartDate());%></td> 
+                                <td><%out.print(temp.getProEndDate());%></td>
+                                <td><%out.print(temp.getProSteps());%></td>
+                                <td><%out.print(temp.getProStatus());%></td>
+                            </tr>  
+                            <%}%></tbody> </table>
 
 
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>
-
-
-
-
-
-
-
-
-
-
 
             <article class="module width_full">
                 <header><h3>Stats</h3></header>
@@ -205,19 +187,9 @@
                 </div>
             </article><!-- end of stats article -->
 
-
-
-
-
             <div class="clear"></div>
 
-
-
-
-
-
         </section>
-
 
     </body>
 

@@ -9,6 +9,7 @@ import datasource.DBconnector;
 import datasource.Mapper;
 import java.sql.Connection;
 import java.util.ArrayList;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 public class AppController {
 
     Mapper mapper;
+    
+
+    
 
     public ArrayList listAllProjects() {
 
@@ -52,12 +56,33 @@ public class AppController {
     }
 
     public boolean createNewProject(int proID, int proEmpID, int proParID, String proName, String proStartDate,
-            String proEndDate, String proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds) {
+            String proEndDate, String proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds, Part filePart) {
 
         mapper = new Mapper();
 
-        return mapper.addProject(DBconnector.getInstance().getConnection(), proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
+        return mapper.addProject(DBconnector.getInstance().getConnection(), proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds,filePart);
 
     }
 
+    public boolean checkPassword(String user, String pw){
+    
+        mapper = new Mapper();
+        
+        return mapper.checkPw(user, pw, DBconnector.getInstance().getConnection());
+    
+    
+    }
+    
+    public Project listSelectedProject(String ClickedID){
+    
+    Mapper mapper = new Mapper();
+    
+    Project p;
+    
+    p = mapper.getSelectedProject(DBconnector.getInstance().getConnection(), ClickedID);
+    
+    return p;
+    }
+    
+    
 }

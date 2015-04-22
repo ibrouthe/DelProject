@@ -9,12 +9,19 @@ package datasource;
 import domain.AppController;
 import domain.Partner;
 import domain.Project;
+import domain.UserLogin;
+import java.awt.image.BufferedImage;
 import java.beans.Statement;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -22,6 +29,7 @@ import java.util.ArrayList;
  */
 public class Mapper {
 
+    UserLogin ul;
     Statement statement;
     ResultSet rs;
     private int createdParID;
@@ -162,7 +170,7 @@ public class Mapper {
     }
 
     public boolean addProject(Connection con, int proID, int proEmpID, int proParID, String proName, String proStartDate,
-            String proEndDate, String proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds) {
+            String proEndDate, String proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds, Part filePart) {
 
         Project pro = new Project(99, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE,
                 proStatus, proSteps, proReqFunds, proFunds);
@@ -180,6 +188,14 @@ public class Mapper {
                 statement = con.prepareStatement(sql);
 
                 rowsInserted = statement.executeUpdate();
+
+//                try {
+//                    InputStream is = filePart.getInputStream();
+//                    BufferedImage bi = ImageIO.read(is);
+//                    ImageIO.write(bi, "jpg", new File("C:\\Users\\Ib Routhe\\Dropbox\\coding\\java\\Dell\\images" + filePart.getSubmittedFileName()));
+//                } catch (IOException e) {
+//                    System.out.println(e.getMessage());
+//                }
             } catch (Exception e) {
 
                 System.out.println("Fail1 in Partner details - addPartner");
@@ -206,4 +222,119 @@ public class Mapper {
         return true;
     }
 
+     //1st method called by checkPW(). Using the user's email to find his ID in the database.
+    public void getParID(String email, Connection con) {
+        String sql = "SELECT parid FROM partner WHERE paremail LIKE '" + email + "'";
+        PreparedStatement statement = null;
+        String parID = null;
+        try {
+//            Class.forName(driver);
+//            connection = java.sql.DriverManager.getConnection(URL, username, password);
+            statement = con.prepareStatement(sql);
+            rs = statement.executeQuery();
+ 
+            while (rs.next()) {
+                parID = rs.getString(1);
+ 
+            }
+ 
+        } catch (Exception e) {
+            System.out.println("TRYNA OUTPUT DIS: " + sql);
+            System.out.println("parID ?: " + parID);
+        }
+ 
+        ul.setId(parID);
+    }
+ 
+    //2nd method called by checkPW(), using the Partner ID from getParID() to find the user's password in the database.
+    public void getParPW(String parID, Connection con) {
+        String sql = "SELECT ppass FROM parUser WHERE pid LIKE '" + parID + "'";
+        PreparedStatement statement = null;
+        String parPW = null;
+        try {
+//            Class.forName(driver);
+//            connection = java.sql.DriverManager.getConnection(URL, username, password);
+            statement = con.prepareStatement(sql);
+            rs = statement.executeQuery();
+            //parPW = rs.getString(1);
+            while (rs.next()) {
+ 
+                parPW = rs.getString(1);
+ 
+            }
+ 
+        } catch (Exception e) {
+            System.out.println("TRyNA OUTPUT DIS YO: " + sql);
+            System.out.println("WATS DIS ?: " + parPW);
+        }
+        ul.setPassword(parPW);
+    }
+ 
+    //Method to check the user who is trying to login, by getting his ID and password in the database
+    //and comparing the password in the database to the one he typed in.
+    //Calling methods getParID() and getParPW() to do so.
+    //Finally checking if the typed in password, matches the one in our database.
+    //Returns true if they match.
+    
+    public boolean checkPw(String user, String pw, Connection con) {
+        ul = new UserLogin();
+ 
+        getParID(user,con);
+ 
+        String dbID = ul.getId();
+        System.out.println("dbID: " + dbID);
+ 
+        getParPW(dbID,con);
+ 
+        String dbPass = ul.getPassword();
+ 
+        if (pw.equalsIgnoreCase(dbPass)) {
+ 
+            return true;
+        } else {
+            return false;
+        }
+ 
+    }
+    
+       
+    public Project getSelectedProject(Connection con, String ClickedID) {
+
+        System.out.println("ClickedID fra ProjectMapper: " + ClickedID);
+        String SQLString = "SELECT * FROM Project WHERE proID = " + ClickedID;
+        PreparedStatement statement = null;
+        Project selProject = new Project();
+
+        try {
+
+            statement = con.prepareStatement(SQLString);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+
+                selProject.setProID(rs.getInt(1));
+                selProject.setProEmpID(rs.getInt(2));
+                selProject.setProParID(rs.getInt(3));
+                selProject.setProName(rs.getString(4));
+                selProject.setProStartDate(rs.getString(5));
+                selProject.setProEndDate(rs.getString(6));
+                selProject.setProPeo(rs.getString(7));
+                selProject.setProStatus(rs.getInt(8));
+                selProject.setProSteps(rs.getInt(9));
+                selProject.setProReqFunds(rs.getInt(10));
+                selProject.setProFunds(rs.getInt(11));
+
+                System.out.println("DEBUGGER " + selProject);
+
+            }}catch (SQLException ee){
+                    
+                    
+                    }
+    
+        return selProject;
+    
+    }
+    
+    
 }

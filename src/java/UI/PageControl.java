@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -28,6 +29,9 @@ public class PageControl extends HttpServlet {
     AppController appcon;
 
     HttpSession session;
+    
+    Part filePart;
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -104,26 +108,67 @@ public class PageControl extends HttpServlet {
 
                 request.getSession().setAttribute("message", "you have created a project succesfully");
 
-                int proID = 30611; //Dummy input                
+                int proID = 1; //Dummy input. Skal autogenereres af database.                
                 int proEmpID = Integer.parseInt(request.getParameter("proEmpID"));
                 int proParID = Integer.parseInt(request.getParameter("proParID"));
                 String proName = request.getParameter("proName");
                 String proStartDate = request.getParameter("proStartDate");
                 String proEndDate = request.getParameter("proEndDate");
                 String proPOE = "This is a proPOE"; //Dummy input
-                int proStatus = 0; //Dummy input
+                int proStatus = Integer.parseInt(request.getParameter("proStatus")); //Dummy input
                 int proSteps = 1; //Dummy input
                 int proReqFunds = Integer.parseInt(request.getParameter("proReqFunds"));
                 int proFunds = 5000; //Dummy input
 
-                boolean aPro = appcon.createNewProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
+//                filePart = request.getPart("photo");    
+                
+                boolean aPro = appcon.createNewProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds, filePart);
                 if (aPro) {
                     response.sendRedirect("index.jsp");
                 } else {
                     response.sendRedirect("newProjektForm.jsp");
                 }
                 return;
+                
+           case "login":
+                String user = request.getParameter("email");
+                String pass = request.getParameter("pw");
+               
+                            
+                boolean checkPw = appcon.checkPassword(user, pass);
+                
+                System.out.println(checkPw);
+               
+                if(checkPw == true){
+                    response.sendRedirect("index.jsp");
+                    System.out.println("You are now logged in as: "+user+"!");
+                }else {
+                    response.sendRedirect("login.jsp");
+                    System.out.println("Login Failed! User: " + user + " not found!");
+                }
+                return;
 
+               case "selectedProject":
+ 
+                System.out.println("Vi er i selectedProject Case");
+                String clickedProID = request.getParameter("param1");
+                System.out.println("clickedPro fra PageControl: " + clickedProID);
+                Project p = appcon.listSelectedProject(clickedProID);
+                System.out.println("proName: " + p.getProName());
+                request.getSession().setAttribute("clickedProject", p);
+                response.sendRedirect("selectedProject.jsp");
+                return;
+           
+            case "dismissed":
+               
+                System.out.println("Den Blev dismissed!");
+                response.sendRedirect("index.jsp");
+               
+            case "approved":
+               
+                System.out.println("Den Blev approved!");
+                response.sendRedirect("selectedProject.jsp");
+               
         }
 
     }

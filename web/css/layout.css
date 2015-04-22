@@ -930,3 +930,16 @@ a.standard {
 		url('fonts/websymbols-regular-webfont.woff') format('woff'),
 		url('fonts/websymbols-regular-webfont.ttf') format('truetype'),
 		url('fonts/websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg')}
+
+
+#step{
+    background-color: yellow;
+    
+}
+#active{
+    background-color: red;
+    
+}
+#list{
+    font-size: 25px;
+}
