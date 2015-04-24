@@ -12,15 +12,19 @@ import java.util.ArrayList;
 import javax.servlet.http.Part;
 
 /**
- *
+ * lav ny mapper i constructor
  * @author Pc
  */
 public class AppController {
 
     Mapper mapper;
+    // Mapper mapper = DbMapper.getInstance();
     
-
+    public AppController() {}
     
+    public AppController(Mapper mapper) {
+        this.mapper = mapper;
+    }
 
     public ArrayList listAllProjects() {
 
@@ -33,7 +37,7 @@ public class AppController {
         return showlist;
 
     }
-
+//Test at du får alle partners ud og at du kun kalder mappereren een gang
     public ArrayList listAllPartners() {
 
         mapper = new Mapper();
@@ -60,29 +64,27 @@ public class AppController {
 
         mapper = new Mapper();
 
-        return mapper.addProject(DBconnector.getInstance().getConnection(), proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds,filePart);
+        return mapper.addProject(DBconnector.getInstance().getConnection(), proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds, filePart);
 
     }
 
-    public boolean checkPassword(String user, String pw){
-    
+    public boolean checkPassword(String user, String pw) {
+
         mapper = new Mapper();
-        
+
         return mapper.checkPw(user, pw, DBconnector.getInstance().getConnection());
-    
-    
+
     }
-    
-    public Project listSelectedProject(String ClickedID){
-    
-    Mapper mapper = new Mapper();
-    
-    Project p;
-    
-    p = mapper.getSelectedProject(DBconnector.getInstance().getConnection(), ClickedID);
-    
-    return p;
+
+    public Project listSelectedProject(String ClickedID) {
+
+        Mapper mapper = new Mapper();
+
+        Project p;
+
+        p = mapper.getSelectedProject(DBconnector.getInstance().getConnection(), ClickedID);
+
+        return p;
     }
-    
-    
+
 }

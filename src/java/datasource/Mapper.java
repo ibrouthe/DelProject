@@ -172,7 +172,7 @@ public class Mapper {
     public boolean addProject(Connection con, int proID, int proEmpID, int proParID, String proName, String proStartDate,
             String proEndDate, String proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds, Part filePart) {
 
-        Project pro = new Project(99, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE,
+        Project pro = new Project(0, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE,
                 proStatus, proSteps, proReqFunds, proFunds);
 
         if (checkInputProject(pro) == true) {
@@ -337,4 +337,20 @@ public class Mapper {
     }
     
     
+    public void updateApproveProject(Connection con, int currentProID, int choice) {
+
+      
+        String SQLString = "UPDATE project SET prostatus = " + choice + " WHERE proID = " + currentProID;
+        PreparedStatement statement = null;        
+
+        try {
+            statement = con.prepareStatement(SQLString);
+
+            rs = statement.executeQuery();
+
+        } catch (SQLException ee) {
+
+        }
+    }
 }
+

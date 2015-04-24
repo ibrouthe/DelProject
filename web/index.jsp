@@ -90,12 +90,12 @@
             <h3>Projects</h3>
             <ul class="toggle">
                 <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
-                 <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
+                 <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
             </ul>
             <h3>Partners</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
-                 <li class="icn_profile"><a href="http://localhost:8080/Dell/PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
+                 <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
            
             </ul>
 
