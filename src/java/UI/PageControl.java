@@ -29,9 +29,8 @@ public class PageControl extends HttpServlet {
     AppController appcon;
 
     HttpSession session;
-    
+
     Part filePart;
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -83,6 +82,7 @@ public class PageControl extends HttpServlet {
                 }
 
                 break;
+                
 
             case "partnerForm":
 
@@ -98,11 +98,33 @@ public class PageControl extends HttpServlet {
 
                 boolean ap = appcon.createNewPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
                 if (ap) {
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("Dashboard.jsp");
                 } else {
                     response.sendRedirect("newPartnerForm.jsp");
                 }
                 return;
+                
+                case "approve":
+
+                System.out.println("Vi er i approve Case");
+                int choice = 0;               
+                Project selPro = (Project) request.getSession().getAttribute("clickedProject");                  
+                String stat = request.getParameter("changeStatus");
+                System.out.println("changeStats in PageControl: " + stat);
+                switch (stat) {
+                    case "needsAproval": { choice = 0; break; }
+                    case "active": { choice = 1; break; }
+                    case "inactive": { choice = 2; break; }
+                    case "completed": { choice = 3; break; }
+                }
+//                This updates the status of the Project:                
+                appcon.approveProject(selPro.getProID(), choice);                                
+                Project updatedP = appcon.listSelectedProject("" + selPro.getProID());
+                //This checks and updates the Step accordingly:
+                appcon.updateStep(updatedP); 
+                updatedP = appcon.listSelectedProject("" + selPro.getProID());               
+                request.getSession().setAttribute("clickedProject", updatedP);                
+                response.sendRedirect("selectedProject.jsp");
 
             case "projectForm":
 
@@ -121,35 +143,62 @@ public class PageControl extends HttpServlet {
                 int proFunds = 5000; //Dummy input
 
 //                filePart = request.getPart("photo");    
-                
                 boolean aPro = appcon.createNewProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds, filePart);
                 if (aPro) {
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("Dashboard.jsp");
                 } else {
                     response.sendRedirect("newProjektForm.jsp");
                 }
                 return;
-                
-           case "login":
+
+            case "partnerLogin":
                 String user = request.getParameter("email");
                 String pass = request.getParameter("pw");
-               
-                            
-                boolean checkPw = appcon.checkPassword(user, pass);
-                
-                System.out.println(checkPw);
-               
-                if(checkPw == true){
-                    response.sendRedirect("index.jsp");
-                    System.out.println("You are now logged in as: "+user+"!");
-                }else {
-                    response.sendRedirect("login.jsp");
+
+                boolean checkParPw = appcon.checkParPassword(user, pass);
+
+                if (checkParPw == true) {
+                    response.sendRedirect("Dashboard.jsp");
+                    System.out.println("You are now logged in as: " + user + "!");
+                } else {
+                    response.sendRedirect("PartnerLogin.jsp");
                     System.out.println("Login Failed! User: " + user + " not found!");
                 }
+
+                session = request.getSession();
+                String pname = appcon.returnName();
+                String prole = appcon.returnRole();
+
+                session.setAttribute("role", prole);
+                session.setAttribute("name", pname);
+
                 return;
 
-               case "selectedProject":
- 
+            case "employeeLogin":
+                String eUser = request.getParameter("email");
+                String ePass = request.getParameter("pw");
+
+                boolean checkEmpPw = appcon.checkEmpPassword(eUser, ePass);
+
+                if (checkEmpPw == true) {
+
+                    response.sendRedirect("Dashboard.jsp");
+
+                } else {
+                    response.sendRedirect("EmployeeLogin.jsp");
+
+                }
+
+                session = request.getSession();
+                String ename = appcon.returnName();
+                String erole = appcon.returnRole();
+
+                session.setAttribute("role", erole);
+                session.setAttribute("name", ename);
+                return;
+
+            case "selectedProject":
+
                 System.out.println("Vi er i selectedProject Case");
                 String clickedProID = request.getParameter("param1");
                 System.out.println("clickedPro fra PageControl: " + clickedProID);
@@ -158,17 +207,14 @@ public class PageControl extends HttpServlet {
                 request.getSession().setAttribute("clickedProject", p);
                 response.sendRedirect("selectedProject.jsp");
                 return;
-           
-            case "dismissed":
-               
-                System.out.println("Den Blev dismissed!");
-                response.sendRedirect("index.jsp");
-               
-            case "approved":
-               
-                System.out.println("Den Blev approved!");
-                response.sendRedirect("selectedProject.jsp");
-               
+
+       
+
+            case "logout":
+
+                session.invalidate();
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
+
         }
 
     }

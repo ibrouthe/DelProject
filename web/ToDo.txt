@@ -35,3 +35,17 @@ ProjectMapper   Java klasse             Her oversættes objekter til SQL kode og
 cphir17         Database                Selve data i tabelform.
                                                                                   
                                       
+NOTER TIL CLOSE CONNECTION:
+
+From the javadocs:
+
+"When a Statement object is closed, its current ResultSet object, if one exists, is also closed."
+
+However, the javadocs are not very clear on whether the Statement and ResultSet are closed when 
+you close the underlying Connection. They simply state that closing a Connection:
+
+"Releases this Connection object's database and JDBC resources immediately instead of waiting
+ for them to be automatically released."
+
+Always explicitly close ResultSets, Statements and Connections when you are finished with them 
+as the implementation of close could vary between database drivers.

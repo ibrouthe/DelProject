@@ -66,14 +66,19 @@
 
         <header id="header">
             <hgroup>
-                <h1 class="site_title"><a href="index.jsp">Dell Partner Management</a></h1>
-                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="http://www.medialoot.com">View Site</a></div>
+                <h1 class="site_title"><a href="Dashboard.jsp">Dell Partner Management</a></h1>
+                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
             </hgroup>
         </header> <!-- end of header bar -->
 
         <section id="secondary_bar">
             <div class="user">
-                <p>John Doe (<a href="#">3 Messages</a>)</p>
+                <p><%
+                    String username = (String) session.getAttribute("name");
+
+                    out.println(username);
+
+                    %> (<a href="#">3 Messages</a>)</p>
                 <!-- <a class="logout_user" href="#" title="Logout">Logout</a> -->
             </div>
             <div class="breadcrumbs_container">
@@ -93,12 +98,12 @@
             <h3>Projects</h3>
             <ul class="toggle">
                 <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
-                 <li class="icn_folder"><a href="http://localhost:8080/Dell/PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
+                 <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
             </ul>
             <h3>Partners</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
-                 <li class="icn_profile"><a href="http://localhost:8080/Dell/PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
+                 <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
            
             </ul>
 

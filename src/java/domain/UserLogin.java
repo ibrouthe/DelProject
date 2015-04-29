@@ -13,10 +13,19 @@ public class UserLogin {
     String id = null;
     String username = null;
     String password = null;
+    String role =null;
  
     public void setUsername(String user) {
         username = user;
  
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
  
     public void setPassword(String pw) {

@@ -32,7 +32,7 @@ public class AppController {
 
         ArrayList<Project> showlist;
 
-        showlist = mapper.listProject(DBconnector.getInstance().getConnection());
+        showlist = mapper.listProject();
 
         return showlist;
 
@@ -44,7 +44,7 @@ public class AppController {
 
         ArrayList<Partner> showlist;
 
-        showlist = mapper.listPartner(DBconnector.getInstance().getConnection());
+        showlist = mapper.listPartner();
 
         return showlist;
 
@@ -55,7 +55,7 @@ public class AppController {
 
         mapper = new Mapper();
 
-        return mapper.addPartner(DBconnector.getInstance().getConnection(), parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+        return mapper.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
 
     }
 
@@ -64,17 +64,38 @@ public class AppController {
 
         mapper = new Mapper();
 
-        return mapper.addProject(DBconnector.getInstance().getConnection(), proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds, filePart);
+        return mapper.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds, filePart);
 
     }
 
-    public boolean checkPassword(String user, String pw) {
+    public boolean checkParPassword(String user, String pw) {
 
         mapper = new Mapper();
 
-        return mapper.checkPw(user, pw, DBconnector.getInstance().getConnection());
+        return mapper.checkParPw(user, pw);
 
     }
+    
+       public boolean checkEmpPassword(String user, String pw) {
+
+        mapper = new Mapper();
+
+        return mapper.checkEmpPw(user, pw);
+
+    }
+       
+       
+       public String returnName(){
+       
+       return mapper.returnName();
+       
+       }
+       
+       public String returnRole(){
+       
+           return mapper.returnRole();
+       
+       }
 
     public Project listSelectedProject(String ClickedID) {
 
@@ -82,9 +103,57 @@ public class AppController {
 
         Project p;
 
-        p = mapper.getSelectedProject(DBconnector.getInstance().getConnection(), ClickedID);
+        p = mapper.getSelectedProject(ClickedID);
 
         return p;
+    }
+    
+    public void approveProject(int proID, int choice) {
+ 
+        Mapper mapper = new Mapper();
+ 
+        mapper.updateApproveProject(proID, choice);
+ 
+    }
+ 
+    public void updateStep(Project currentPro) {
+ 
+        //metoden her skal ikke være i appController
+        int currentProID = currentPro.getProID();
+        int oldStep = currentPro.getProSteps();
+        int newStep = oldStep;
+        int currentStat = currentPro.getProStatus();
+        String currentPOE = currentPro.getProPeo();
+ 
+        if (currentPOE.equals("POE_NULL") && oldStep > 5) {
+            newStep = 5;
+        }
+        switch (currentStat) {
+            //needs approval
+            case 0: {
+                newStep = 1;
+                break;
+            }
+            //active
+            case 1: {
+                if (oldStep < 3) { newStep = 3; }
+                break;
+            }
+            //inactive
+            case 2: {
+                break;
+            }
+            //completed
+            case 3: {
+                newStep = 7;
+                break;
+            }
+        }
+ 
+        // Metoden som skal være i AppController:
+        Mapper mapper = new Mapper();
+        mapper.updateStep(currentProID, newStep);
+ 
     }
 
 }

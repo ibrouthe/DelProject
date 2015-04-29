@@ -1,7 +1,7 @@
-<%-- 
-    Document   : newProjektForm
-    Created on : Apr 14, 2015, 11:03:48 AM
-    Author     : TOcvfan
+<%--
+   Document   : index
+   Created on : 08-04-2015, 02:15:23
+   Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,13 +12,13 @@
 
     <head>
         <meta charset="utf-8"/>
-        <title>Create new project!</title>
+        <title>Login!</title>
 
         <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
         <!--[if lt IE 9]>
-        <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+       <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
+       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+       <![endif]-->
         <script src="js/jquery-1.5.2.min.js" type="text/javascript"></script>
         <script src="js/hideshow.js" type="text/javascript"></script>
         <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
@@ -63,38 +63,22 @@
 
         <header id="header">
             <hgroup>
-                <h1 class="site_title"><a href="Dashboard.jsp">Dell Partner Management</a></h1>
-                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
+                <h1 class="site_title"><a href="index.jsp">Dell Partner Management</a></h1>
+                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="index.jsp">Login</a></div>
             </hgroup>
         </header> <!-- end of header bar -->
 
+        <div class="center">
+            <h1>Please login to proceed:</h1>
 
-        <title>Create new project!</title>
-    </head>
-    <div class="center">
-        <h1>Create new project:</h1>
-        <form name="projectForm" action="PageControl">
-            <p>Project Name:</p><input type="text" name="proName" value="" size="50" />
-            <p>Dell Employee ID:</p><input type="text" name="proEmpID" value="" size="50" /><label> if unknown type 0</label>            
-            <p>Partner Id:</p><input type="text" name="proParID" value="" size="50" />
-            <p>Project Id:</p><input type="text" name="proID" value="" size="50" />
-            <p>Project start date:</p><input type="text" name="proStartDate" value="" size="50" />
-            <p>Project end date:</p><input type="text" name="proEndDate" value="" size="50" />
-            <p>Funds Request:</p><input type="text" name="proReqFunds" value="" size="50" />
-            <p>Project Status:</p><input type="text" name="proStatus" value="" size="50" />
-            <input type="hidden" name="command" value="projectForm" />
-            <br><br>
-            <input type="submit" value="Submit" name="projectsubmit" />
+            <form method="post" action="PageControl" id="form">
+                <p>E-Mail:</p><input type="text" name="email" value="" size="50" />
+                <p>Password:</p><input type="password" name="pw" value="" size="50" />
+                <br><br>
+                <button name="command" value="employeeLogin">Login</button>
+                <button name="command" value="employeeForgotPW">Forgot Password</button>
+            </form>
+        </div>
+    </body>
 
-
-            <input type="hidden" name="command" value="projectForm"></li>
-
-            </div>
-
-
-        </form>
-
-
-
-</body>
 </html>

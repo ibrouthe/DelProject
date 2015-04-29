@@ -28,29 +28,30 @@ import javax.servlet.http.Part;
  * @Gruppe 2 Silas, Thomas, Christian, Martin, Ib
  */
 public class Mapper {
-
+    
     UserLogin ul;
-    Statement statement;
+    PreparedStatement statement;
     ResultSet rs;
     private int createdParID;
+//Connection con;
 
-    public ArrayList<Project> listProject(Connection con) {
-
+    public ArrayList<Project> listProject() {
+        
         ArrayList<Project> list = new ArrayList<Project>();
-
+        
         String SQLString = "SELECT * FROM Project";
-        PreparedStatement statement = null;
-
-        try {
-
+        statement = null;
+        
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            
             statement = con.prepareStatement(SQLString);
-
+            
             rs = statement.executeQuery();
-
+            
             while (rs.next()) {
-
+                
                 Project project = new Project();
-
+                
                 project.setProID(rs.getInt(1));
                 project.setProEmpID(rs.getInt(2));
                 project.setProParID(rs.getInt(3));
@@ -62,37 +63,52 @@ public class Mapper {
                 project.setProSteps(rs.getInt(9));
                 project.setProReqFunds(rs.getInt(10));
                 project.setProFunds(rs.getInt(11));
-
-                System.out.println("DEBUGGER " + project);
+                
                 list.add(project);
-
+                
             }
-
+            
         } catch (SQLException ee) {
-
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
         }
-
+        
         return list;
-
+        
     }
-
-    public ArrayList<Partner> listPartner(Connection con) {
-
+    
+    public ArrayList<Partner> listPartner() {
+        
         ArrayList<Partner> list = new ArrayList<Partner>();
-
+        
         String SQLString = "SELECT * FROM Partner";
-        PreparedStatement statement = null;
-
-        try {
-
+        statement = null;
+        
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            
             statement = con.prepareStatement(SQLString);
-
+            
             rs = statement.executeQuery();
-
+            
             while (rs.next()) {
-
+                
                 Partner partner = new Partner();
-
+                
                 partner.setParID(rs.getInt(1));
                 partner.setParName(rs.getString(2));
                 partner.setParAdress(rs.getString(3));
@@ -100,93 +116,115 @@ public class Mapper {
                 partner.seteMail(rs.getString(5));
                 partner.setCVR(rs.getString(6));
                 partner.setParFunds(rs.getInt(7));
-
-                System.out.println("DEBUGGER " + partner);
+                
                 list.add(partner);
-
+                
             }
-
+            
         } catch (SQLException ee) {
-
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+            
         }
-
+        
         return list;
-
+        
     }
-
-    public boolean addPartner(Connection con, int parId, String parName, String parAdress, String parPhone,
+    
+    public boolean addPartner(int parId, String parName, String parAdress, String parPhone,
             String eMail, String CVR, String parPass, int parFunds) {
-
+        
         Partner p = new Partner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
         if (checkInputPartner(p) == true) {
             int rowsInserted = 0;
-
+            
             String sql = "INSERT INTO Partner VALUES(parSeq.nextval,'" + p.getParName() + "','" + p.getParAdress() + "','"
                     + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds() + ")";
-
+            
             PreparedStatement statement1 = null;
             PreparedStatement statement2 = null;
-
-            try {
-
+            
+            try (Connection con = DBconnector.getInstance().getConnection()) {
+                
                 statement1 = con.prepareStatement(sql);
-
+                
                 rowsInserted = statement1.executeUpdate();
-
+                
                 String SQLString = "SELECT * FROM PARTNER WHERE PAREMAIL LIKE'" + p.geteMail() + "'";
-
+                
                 statement1 = con.prepareStatement(SQLString);
-
+                
                 rs = statement1.executeQuery();
-
+                
                 while (rs.next()) {
-
+                    
                     createdParID = rs.getInt(1);
-
+                    
                 }
                 String SQLparUserTable = "INSERT INTO PARUSER VALUES('" + createdParID + "','" + p.getParPass() + "')";
-
+                
                 statement2 = con.prepareStatement(SQLparUserTable);
-
+                
                 rowsInserted = statement1.executeUpdate();
                 rowsInserted = statement2.executeUpdate();
-
-            } catch (Exception e) {
-
-                System.out.println("Fail1 in Partner details - addPartner");
-                System.out.println(e.getMessage());
-            } finally // must close statement1
-            {
+                
+            } catch (SQLException ee) {
+                
+                printSQLException(ee);
+                
+            } finally {
                 try {
-                    statement1.close();
-                } catch (SQLException e) {
-                    System.out.println("Fail2 in Partner details - addPartner");
-                    System.out.println(e.getMessage());
-                }
+                    if (rs != null) {
+                        rs.close();
+                    }
+                } catch (Exception e) {
+                    
+                };
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                } catch (Exception e) {
+                };
             }
             return rowsInserted == 1;
         }
         return true;
     }
-
-    public boolean addProject(Connection con, int proID, int proEmpID, int proParID, String proName, String proStartDate,
+    
+    public boolean addProject(int proID, int proEmpID, int proParID, String proName, String proStartDate,
             String proEndDate, String proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds, Part filePart) {
-
+        
         Project pro = new Project(0, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE,
                 proStatus, proSteps, proReqFunds, proFunds);
-
+        
         if (checkInputProject(pro) == true) {
             int rowsInserted = 0;
-
+            
             String sql = "INSERT INTO PROJECT VALUES(proSeq.nextval," + pro.getProEmpID() + "," + pro.getProParID() + ",'"
-                    + pro.getProName() + "','" + pro.getProStartDate() + "','" + pro.getProEndDate() + "','peo',1,2,"
+                    + pro.getProName() + "','" + pro.getProStartDate() + "','" + pro.getProEndDate() + "','PEO_NULL',0,2,"
                     + pro.getProReqFunds() + ",100)";
-
+            
             PreparedStatement statement = null;
-            try {
-
+            
+            try (Connection con = DBconnector.getInstance().getConnection()) {
+                
                 statement = con.prepareStatement(sql);
-
+                
                 rowsInserted = statement.executeUpdate();
 
 //                try {
@@ -196,123 +234,440 @@ public class Mapper {
 //                } catch (IOException e) {
 //                    System.out.println(e.getMessage());
 //                }
-            } catch (Exception e) {
-
-                System.out.println("Fail1 in Partner details - addPartner");
-                System.out.println(e.getMessage());
-            } finally // must close statement1
-            {
+            } catch (SQLException ee) {
+                
+                printSQLException(ee);
+                
+            } finally {
                 try {
-                    statement.close();
-                } catch (SQLException e) {
-                    System.out.println("Fail2 in Partner details - addPartner");
-                    System.out.println(e.getMessage());
-                }
+                    if (rs != null) {
+                        rs.close();
+                    }
+                } catch (Exception e) {
+                    
+                };
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                } catch (Exception e) {
+                };
             }
             return rowsInserted == 1;
         }
         return true;
     }
-
+    
     public boolean checkInputPartner(Partner p) {
         return true;
     }
-
+    
     public boolean checkInputProject(Project pro) {
         return true;
     }
+    
+    
+    
+   
+ 
+    public void updateStep(int currentProID, int newStep) {
+ 
+        String SQLString = "UPDATE project SET prosteps = " + newStep + " WHERE proID = " + currentProID;
+        PreparedStatement statement = null;
+ 
+        try (Connection con = DBconnector.getInstance().getConnection()){
+            statement = con.prepareStatement(SQLString);
+ 
+            rs = statement.executeQuery();
+ 
+        } catch (SQLException ee) {
+                
+                printSQLException(ee);
+                
+            } finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                } catch (Exception e) {
+                    
+                };
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                } catch (Exception e) {
+                };
+            }
+    }
+    
+    
+    
+    
+    
+    
+    
 
-     //1st method called by checkPW(). Using the user's email to find his ID in the database.
-    public void getParID(String email, Connection con) {
+    //1st method called by checkPW(). Using the user's email to find his ID in the database.
+    public void getParID(String email) {
         String sql = "SELECT parid FROM partner WHERE paremail LIKE '" + email + "'";
         PreparedStatement statement = null;
         String parID = null;
-        try {
-//            Class.forName(driver);
-//            connection = java.sql.DriverManager.getConnection(URL, username, password);
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            
             statement = con.prepareStatement(sql);
             rs = statement.executeQuery();
- 
+            
             while (rs.next()) {
                 parID = rs.getString(1);
- 
+                
             }
- 
-        } catch (Exception e) {
-            System.out.println("TRYNA OUTPUT DIS: " + sql);
-            System.out.println("parID ?: " + parID);
+            
+        } catch (SQLException ee) {
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
         }
- 
+        
         ul.setId(parID);
     }
- 
+
     //2nd method called by checkPW(), using the Partner ID from getParID() to find the user's password in the database.
-    public void getParPW(String parID, Connection con) {
+    public void getParPW(String parID) {
         String sql = "SELECT ppass FROM parUser WHERE pid LIKE '" + parID + "'";
         PreparedStatement statement = null;
         String parPW = null;
-        try {
-//            Class.forName(driver);
-//            connection = java.sql.DriverManager.getConnection(URL, username, password);
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            
             statement = con.prepareStatement(sql);
             rs = statement.executeQuery();
-            //parPW = rs.getString(1);
+            
             while (rs.next()) {
- 
+                
                 parPW = rs.getString(1);
- 
+                
             }
- 
-        } catch (Exception e) {
-            System.out.println("TRyNA OUTPUT DIS YO: " + sql);
-            System.out.println("WATS DIS ?: " + parPW);
+            
+        } catch (SQLException ee) {
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
         }
         ul.setPassword(parPW);
     }
- 
+
     //Method to check the user who is trying to login, by getting his ID and password in the database
     //and comparing the password in the database to the one he typed in.
     //Calling methods getParID() and getParPW() to do so.
     //Finally checking if the typed in password, matches the one in our database.
     //Returns true if they match.
+    public boolean checkParPw(String user, String pw) {
+        ul = new UserLogin();
+        
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            
+            getParID(user);
+            getParName(user);
+            
+            String dbID = ul.getId();
+            System.out.println("dbID: " + dbID);
+            
+            getParPW(dbID);
+            
+            String dbPass = ul.getPassword();
+            
+            if (pw.equalsIgnoreCase(dbPass)) {
+                
+                ul.setPassword(null);
+                ul.setRole("partner");
+                
+                return true;
+            } else {
+                ul.setPassword(null);
+                return false;
+            }
+            
+        } catch (SQLException ee) {
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+        
+        return false;
+        
+    }
     
-    public boolean checkPw(String user, String pw, Connection con) {
+    public void getParName(String email) {
+        
+        String sql = "SELECT PARNAME FROM PARTNER WHERE PAREMAIL LIKE '" + email + "'";
+        
+        PreparedStatement statement = null;
+        
+        String parname = null;
+        
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            
+            statement = con.prepareStatement(sql);
+            rs = statement.executeQuery();
+            
+            while (rs.next()) {
+                
+                parname = rs.getString(1);
+                
+            }
+            
+        } catch (SQLException ee) {
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+        
+        ul.setUsername(parname);
+        
+    }
+    
+    
+  
+    
+    
+    public void getEmpID(String email) {
+        String sql = "SELECT empid FROM employee WHERE empmail LIKE '" + email + "'";
+        PreparedStatement statement = null;
+        String empID = null;
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+
+            statement = con.prepareStatement(sql);
+            rs = statement.executeQuery();
+ 
+            while (rs.next()) {
+                empID = rs.getString(1);
+ 
+            }
+ 
+        } catch (SQLException ee) {
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+ 
+        ul.setId(empID);
+    }
+ 
+    public void getEmpName(String email) {
+        String sql = "SELECT empname FROM employee WHERE empmail LIKE '" + email + "'";
+        PreparedStatement statement = null;
+        String empName = null;
+        try (Connection con = DBconnector.getInstance().getConnection()){
+
+            statement = con.prepareStatement(sql);
+            rs = statement.executeQuery();
+ 
+            while (rs.next()) {
+                empName = rs.getString(1);
+ 
+            }
+ 
+        } catch (SQLException ee) {
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+ 
+        ul.setUsername(empName);
+    }
+ 
+   
+    //2nd method called by checkPW(), using the Partner ID from getParID() to find the user's password in the database.
+    public void getEmpPW(String empID) {
+        String sql = "SELECT epass FROM empUser WHERE eid LIKE '" + empID + "'";
+        PreparedStatement statement = null;
+        String empPW = null;
+        try (Connection con = DBconnector.getInstance().getConnection()){
+
+            statement = con.prepareStatement(sql);
+            rs = statement.executeQuery();
+           
+            while (rs.next()) {
+ 
+                empPW = rs.getString(1);
+ 
+            }
+ 
+        } catch (SQLException ee) {
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+        ul.setPassword(empPW);
+    }
+ 
+    public boolean checkEmpPw(String user, String pw) {
         ul = new UserLogin();
  
-        getParID(user,con);
- 
+        getEmpID(user);
+        getEmpName(user);
+       
         String dbID = ul.getId();
-        System.out.println("dbID: " + dbID);
- 
-        getParPW(dbID,con);
+    
+        getEmpPW(dbID);
  
         String dbPass = ul.getPassword();
  
         if (pw.equalsIgnoreCase(dbPass)) {
- 
+            ul.setPassword(null);
+            ul.setRole("employee");
             return true;
         } else {
+            ul.setPassword(null);
             return false;
         }
  
     }
+ 
+    public String returnName() {
+        String name = ul.getUsername();
+        return name;
+    }
+ 
+    public String returnRole() {
+        String role = ul.getRole();
+        return role;
+    }
     
-       
-    public Project getSelectedProject(Connection con, String ClickedID) {
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public Project getSelectedProject(String ClickedID) {
+        
         System.out.println("ClickedID fra ProjectMapper: " + ClickedID);
         String SQLString = "SELECT * FROM Project WHERE proID = " + ClickedID;
         PreparedStatement statement = null;
         Project selProject = new Project();
-
-        try {
-
+        
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            
             statement = con.prepareStatement(SQLString);
-
+            
             rs = statement.executeQuery();
-
+            
             while (rs.next()) {
-
+                
                 selProject.setProID(rs.getInt(1));
                 selProject.setProEmpID(rs.getInt(2));
                 selProject.setProParID(rs.getInt(3));
@@ -324,33 +679,110 @@ public class Mapper {
                 selProject.setProSteps(rs.getInt(9));
                 selProject.setProReqFunds(rs.getInt(10));
                 selProject.setProFunds(rs.getInt(11));
-
+                
                 System.out.println("DEBUGGER " + selProject);
-
-            }}catch (SQLException ee){
-                    
-                    
-                    }
-    
+                
+            }
+        } catch (SQLException ee) {
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+        
         return selProject;
-    
+        
     }
     
-    
-    public void updateApproveProject(Connection con, int currentProID, int choice) {
-
-      
+    public void updateApproveProject(int currentProID, int choice) {
+        
         String SQLString = "UPDATE project SET prostatus = " + choice + " WHERE proID = " + currentProID;
-        PreparedStatement statement = null;        
-
-        try {
+        PreparedStatement statement = null;
+        
+        try (Connection con = DBconnector.getInstance().getConnection()) {
             statement = con.prepareStatement(SQLString);
-
+            
             rs = statement.executeQuery();
-
+            
         } catch (SQLException ee) {
-
+            
+            printSQLException(ee);
+            
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+                
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
         }
     }
-}
+    
+    public static void printSQLException(SQLException ex) {
+        
+        for (Throwable e : ex) {
+            if (e instanceof SQLException) {
+                if (ignoreSQLException(
+                        ((SQLException) e).
+                        getSQLState()) == false) {
+                    
+                    e.printStackTrace(System.err);
+                    System.err.println("SQLState: "
+                            + ((SQLException) e).getSQLState());
+                    
+                    System.err.println("Error Code: "
+                            + ((SQLException) e).getErrorCode());
+                    
+                    System.err.println("Message: " + e.getMessage());
+                    
+                    Throwable t = ex.getCause();
+                    while (t != null) {
+                        System.out.println("Cause: " + t);
+                        t = t.getCause();
+                    }
+                }
+            }
+        }
+    }
+    
+    public static boolean ignoreSQLException(String sqlState) {
+        
+        if (sqlState == null) {
+            System.out.println("The SQL state is not defined!");
+            return false;
+        }
 
+        // X0Y32: Jar file already exists in schema
+        if (sqlState.equalsIgnoreCase("X0Y32")) {
+            return true;
+        }
+
+        // 42Y55: Table already exists in schema
+        if (sqlState.equalsIgnoreCase("42Y55")) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+}
