@@ -932,14 +932,52 @@ a.standard {
 		url('fonts/websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg')}
 
 
-#step{
-    background-color: yellow;
+.step{
+    background-color: grey;
+
+}
+
+#active1{
+    background-color: #ffff66;
+    
     
 }
-#active{
-    background-color: red;
-    
+#active2{
+    background-color: orange;
+       
+}
+#active3{
+    background-color: orangered;
+        
+}
+
+#active4{
+    background-color: #ff0066;
+       
+}
+
+#active5{
+    background-color: palevioletred;
+       
+}
+
+#active6{
+    background-color: powderblue;
+       
+}
+
+#active7{
+    background-color: greenyellow;
+       
 }
 #list{
-    font-size: 25px;
+    font-size: 16px;
+}
+form { padding: 20px; overflow: hidden; }
+
+#status{
+    font-size: 18px;
+    color: blue;
+    text-align: center;
+    align-self: center;
 }

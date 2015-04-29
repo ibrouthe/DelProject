@@ -7,6 +7,7 @@ package UI;
 //
 
 import domain.AppController;
+import domain.Employee;
 import domain.Partner;
 import domain.Project;
 import java.io.IOException;
@@ -82,7 +83,6 @@ public class PageControl extends HttpServlet {
                 }
 
                 break;
-                
 
             case "partnerForm":
 
@@ -92,38 +92,58 @@ public class PageControl extends HttpServlet {
                 String parAdress = request.getParameter("parAdress");
                 String parPhone = request.getParameter("parPhone");
                 String parPass = request.getParameter("parPass");
+                String parPass1 = request.getParameter("parPass1");
                 String eMail = request.getParameter("eMail");
                 String CVR = request.getParameter("CVR");
                 int parFunds = 0; // Dummy input
 
-                boolean ap = appcon.createNewPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
-                if (ap) {
-                    response.sendRedirect("Dashboard.jsp");
+                if (parPass.equals(parPass1)) {
+                    boolean ap = appcon.createNewPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+                    if (ap) {
+                        response.sendRedirect("Dashboard.jsp");
+                    } else {
+                        response.sendRedirect("newPartnerForm.jsp");
+                    }
                 } else {
+
+                    //request.getSession().setAttribute("message", "passwords do not match");
                     response.sendRedirect("newPartnerForm.jsp");
                 }
+
                 return;
-                
-                case "approve":
+
+            case "approve":
 
                 System.out.println("Vi er i approve Case");
-                int choice = 0;               
-                Project selPro = (Project) request.getSession().getAttribute("clickedProject");                  
+                int choice = 0;
+                Project selPro = (Project) request.getSession().getAttribute("clickedProject");
                 String stat = request.getParameter("changeStatus");
                 System.out.println("changeStats in PageControl: " + stat);
                 switch (stat) {
-                    case "needsAproval": { choice = 0; break; }
-                    case "active": { choice = 1; break; }
-                    case "inactive": { choice = 2; break; }
-                    case "completed": { choice = 3; break; }
+                    case "needsAproval": {
+                        choice = 0;
+                        break;
+                    }
+                    case "active": {
+                        choice = 1;
+                        break;
+                    }
+                    case "inactive": {
+                        choice = 2;
+                        break;
+                    }
+                    case "completed": {
+                        choice = 3;
+                        break;
+                    }
                 }
 //                This updates the status of the Project:                
-                appcon.approveProject(selPro.getProID(), choice);                                
+                appcon.approveProject(selPro.getProID(), choice);
                 Project updatedP = appcon.listSelectedProject("" + selPro.getProID());
                 //This checks and updates the Step accordingly:
-                appcon.updateStep(updatedP); 
-                updatedP = appcon.listSelectedProject("" + selPro.getProID());               
-                request.getSession().setAttribute("clickedProject", updatedP);                
+                appcon.updateStep(updatedP);
+                updatedP = appcon.listSelectedProject("" + selPro.getProID());
+                request.getSession().setAttribute("clickedProject", updatedP);
                 response.sendRedirect("selectedProject.jsp");
 
             case "projectForm":
@@ -208,7 +228,65 @@ public class PageControl extends HttpServlet {
                 response.sendRedirect("selectedProject.jsp");
                 return;
 
-       
+            //------------------------
+            case "selectedPartner":
+
+                String clickedParID = request.getParameter("param2");
+                Partner pa = appcon.listSelectedPartner(clickedParID);
+
+                request.getSession().setAttribute("clickedPartner", pa);
+                response.sendRedirect("selectedPartner.jsp");
+                return;
+
+            case "employeeForm":
+                //request.getSession().setAttribute("message", "passwords do not match");
+                //request.getSession().setAttribute("message", "you have registrated succesfully");
+                int empID = 0; //Dummy input. Skal autogenereres af database.
+                String empName = request.getParameter("empName");
+                String empMail = request.getParameter("empMail");
+                int empStatus = 0; //Dummy input. 
+                String empPass = request.getParameter("empPass");
+                String empPass1 = request.getParameter("empPass1");
+
+                if (empPass.equals(empPass1)) {
+                    boolean em = appcon.createNewEmployee(empID, empName, empStatus, empMail, empPass);
+                    if (em) {
+                        response.sendRedirect("Dashboard.jsp");
+                    } else {
+                        response.sendRedirect("newEmployeeForm.jsp");
+                    }
+                } else {
+
+                    //request.getSession().setAttribute("message", "passwords do not match");
+                    response.sendRedirect("newEmployeeForm.jsp");
+
+                }
+                return;
+
+            case "listEmployees":
+
+                ArrayList<Employee> showemployeelist;
+
+                showemployeelist = appcon.listAllEmployees();
+
+                session = request.getSession();
+                session.setAttribute("returnemployeelist", showemployeelist);
+
+                try {
+                    response.sendRedirect("listEmployees.jsp");
+                } catch (Exception ee) {
+
+                }
+
+                break;
+
+            case "selectedEmployee":
+
+                String clickedEmpID = request.getParameter("param3");
+                Employee em = appcon.listSelectedEmployee(clickedEmpID);
+                request.getSession().setAttribute("clickedEmployee", em);
+                response.sendRedirect("selectedEmployee.jsp");
+                return;
 
             case "logout":
 

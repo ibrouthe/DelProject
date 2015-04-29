@@ -1,20 +1,22 @@
 <%-- 
-    Document   : index
-    Created on : 08-04-2015, 02:15:23
-    Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
+    Document   : newEmployeeForm
+    Created on : Apr 28, 2015, 12:18:32 PM
+    Author     : Gruppe 2
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "UI.PageControl"%>
 
 <!doctype html>
-<html lang="en">
+<html lang="da">
 
     <head>
         <meta charset="utf-8"/>
-        <title>Create new partner!</title>
+        <title>Create new employee!</title>
 
         <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="/code_examples/tutorial.css">
+        <script type="text/javascript" src="/code_examples/passtest.js"></script>
         <!--[if lt IE 9]>
         <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -63,43 +65,41 @@
 
         <header id="header">
             <hgroup>
-                <h1 class="site_title"><a href="Dashboard.jsp">Dell Partner Management</a></h1>
-                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
+                <h1 class="site_title"><a href="index.jsp">Dell Partner Management</a></h1>
+                <h2 class="section_title">Dashboard</h2>
             </hgroup>
         </header> <!-- end of header bar -->
+        
 
         <div class="center">
-            <h1>Create new partner:</h1>
-            <form name="partnerForm" action="PageControl" id="form">
-                <p>Name:</p><input type="text" name="parName" value="" size="50" />
-                <p>Address:</p><input type="text" name="parAdress" value="" size="50" />   
-                <p>Phone:</p><input type="text" name="parPhone" value="" size="50" />
-                <p>Password:</p><input type="password" name="parPass" value="" required id="password1" size="50" />
-                <p>Retype Password:</p><input type="password" name="parPass1" value="" required id="password2" size="50" />
-
+            <h1>Create new employee:</h1>
+            <form name="employeeForm" action="PageControl" id="form">
+                <p>Name:</p><input type="text" name="empName" value="" size="50" />
+               <p>Email:</p><input type="text" name="empMail" value="" size="50" />
+                <p>Password:</p><input type="password" name="empPass" value="" required id="password1" size="50" />
+                <p>Retype Password:</p><input type="password" name="empPass1" value="" required id="password2" size="50" />
+                
                 <script type="text/javascript">
                     var password1 = document.getElementById('password1');
                     var password2 = document.getElementById('password2');
 
-                    var checkPasswordValidity = function () {
-                        if (password1.value != password2.value) {
-                            password1.setCustomValidity('Passwords must match.');
-                        } else {
-                            password1.setCustomValidity('');
-                        }
-                    };
+                    var checkPasswordValidity = function() {
+                    if (password1.value != password2.value) {
+                        password1.setCustomValidity('Passwords must match.');
+                    } else {
+                        password1.setCustomValidity('');
+                    }        
+                };
 
-                    password1.addEventListener('change', checkPasswordValidity, false);
-                    password2.addEventListener('change', checkPasswordValidity, false);
+                password1.addEventListener('change', checkPasswordValidity, false);
+                password2.addEventListener('change', checkPasswordValidity, false);
                 </script>
-
-                <p>Email:</p><input type="text" name="eMail" value="" size="50" />
-                <p>CVR:</p><input type="text" name="CVR" value="" size="50" />
-                <input type="hidden" name="command" value="partnerForm" />
+                
+                
+                <input type="hidden" name="command" value="employeeForm" />
                 <br><br>
-                <input type="submit" value="Submit" name="partnersubmit"/>
+                <input type="submit" value="Submit" name="employeesubmit"/>
             </form>
         </div>
     </body>
-
 </html>

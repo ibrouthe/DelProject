@@ -155,5 +155,49 @@ public class AppController {
         mapper.updateStep(currentProID, newStep);
  
     }
+    
+    public Partner listSelectedPartner(String ClickedID) {
+
+        Mapper mapper = new Mapper();
+
+        Partner pa;
+
+        pa = mapper.getSelectedPartner(ClickedID);
+
+        return pa;
+    }
+    
+    public boolean createNewEmployee(int empId, String empName, int empStatus, String empMail, String empPass) {
+
+        mapper = new Mapper();
+
+        return mapper.addEmployee(empId, empName, empStatus, empMail, empPass);
+
+    }
+    public ArrayList listAllEmployees() {
+
+        mapper = new Mapper();
+
+        ArrayList<Employee> showlist;
+
+        showlist = mapper.listEmployee();
+
+        return showlist;
+
+    }
+    public Employee listSelectedEmployee(String ClickedID) {
+
+        Mapper mapper = new Mapper();
+
+        Employee em;
+
+        em = mapper.getSelectedEmployee(ClickedID);
+
+        return em;
+    }
+    
+    
+    
+    
 
 }

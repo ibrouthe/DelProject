@@ -1,9 +1,10 @@
 <%-- 
-    Document   : List Partners
-    Created on : 08-04-2015, 02:15:23
-    Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
+    Document   : listEmployees
+    Created on : Apr 29, 2015, 10:08:41 AM
+    Author     : TOcvfan
 --%>
 
+<%@page import="domain.Employee"%>
 <%@page import="domain.Partner"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="domain.Project"%>
@@ -11,7 +12,7 @@
 <%@page import = "UI.PageControl"%>
 
 <!doctype html>
-<html lang="en">
+<html lang="da">
 
     <head>
         <meta charset="utf-8"/>
@@ -66,23 +67,18 @@
 
         <header id="header">
             <hgroup>
-                <h1 class="site_title"><a href="Dashboard.jsp">Dell Partner Management</a></h1>
-                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
+                <h1 class="site_title"><a href="index.jsp">Dell Partner Management</a></h1>
+                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="http://www.medialoot.com">View Site</a></div>
             </hgroup>
         </header> <!-- end of header bar -->
 
         <section id="secondary_bar">
             <div class="user">
-                <p><%
-                    String username = (String) session.getAttribute("name");
-
-                    out.println(username);
-
-                    %> (<a href="#">3 Messages</a>)</p>
+                <p>John Doe (<a href="#">3 Messages</a>)</p>
                 <!-- <a class="logout_user" href="#" title="Logout">Logout</a> -->
             </div>
             <div class="breadcrumbs_container">
-                <article class="breadcrumbs"><a href="index.html">Home</a> <div class="breadcrumb_divider"></div> <a class="current">Dashboard</a></article>
+                <article class="breadcrumbs"><a href="dashboard.jsp">Home</a> <div class="breadcrumb_divider"></div> <a class="current">Dashboard</a></article>
             </div>
         </section><!-- end of secondary bar -->
 
@@ -110,28 +106,16 @@
 
             <h3>StatisticS</h3>
             <ul class="toggle">
-               
-                
-                
                 
             </ul>
 
-
-
-
-
-
-
-
-           <h3>Admin</h3>
+            <h3>Admin</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
                 <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
 
             </ul>
 
-           
-            
             <footer>
                 <hr />
                 <p><strong>Datamatiker 2. semesteropgave Gruppe 2</strong></p>
@@ -144,57 +128,43 @@
             <h4 class="alert_info">7 projects have been edited since your last login.</h4>
 
 
-
-
-
-
             <article class="module width_full">
                 <header><h3>Partners in Database</h3></header>
                 <div class="module_content">
 
-<% ArrayList<Partner> newlist = new ArrayList();
+                    <% ArrayList<Employee> newlist = new ArrayList();
 
-                        newlist = (ArrayList<Partner>) session.getAttribute("returnpartnerlist");
+                        newlist = (ArrayList<Employee>) session.getAttribute("returnemployeelist");
                         %><table  border="1" width="850"> <thead>
                             <tr>
                                 <th>Select</th>
                                 <th>ID    </th> 
                                 <th>Name      </th> 
-                                <th>Phone  </th> 
-                                <th>CVR  </th>
                                 <th>email  </th>
+                                <th>Status  </th>
+                                
                                 
                             </tr> 
                         </thead> <tbody>
 
                             <%
-                        for (Partner temp : newlist) {
+                        for (Employee temp : newlist) {
                             %>
                             <tr>
                                 
-                                <td><a href="PageControl?command=selectedPartner&param2=<%out.print(temp.getParID());%>">View Partner</a></td>
-                                <td><%out.print(temp.getParID());%></td> 
-                                <td><%out.print(temp.getParName());%></td> 
-                                <td><%out.print(temp.getParPhone());%></td> 
-                                <td><%out.print(temp.getCVR());%></td>
-                                <td><%out.print(temp.geteMail());%></td>
-                                
+                                <td><a href="PageControl?command=selectedEmployee&param3=<%out.print(temp.getEmpID());%>">View Employee</a></td>
+                                <td><%out.print(temp.getEmpID());%></td> 
+                                <td><%out.print(temp.getEmpName());%></td> 
+                                <td><%out.print(temp.getEmpMail());%></td>
+                                <td><%out.print(temp.getEmpStatus());%></td>
                             </tr>  
                             <%}%></tbody> </table>
+
 
                 
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>
-
-
-
-
-
-
-
-
-
 
 
             <article class="module width_full">
@@ -224,16 +194,7 @@
                 </div>
             </article><!-- end of stats article -->
 
-
-
-
-
             <div class="clear"></div>
-
-
-
-
-
 
         </section>
 

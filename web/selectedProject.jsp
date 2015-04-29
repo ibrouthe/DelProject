@@ -5,7 +5,7 @@
 --%>
  
 <%@page import="domain.Project"%>
-<<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "UI.PageControl"%>
  
 <!doctype html>
@@ -104,9 +104,11 @@
  
             </ul>
  
-            <h3>Admin</h3>
+           <h3>Admin</h3>
             <ul class="toggle">
- 
+                <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
+                <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
+
             </ul>
  
             <footer>
@@ -139,27 +141,27 @@
                 <header><h3><%out.println(pj.getProName());%></h3></header>
                 <div class="module_content">
  
-                    <table border="0" width="950">
+                            <table border="0" width="950">
                         <thead>
                             <tr>
-                                <th <%if (proSteps == 1) {
-                                    %>id="active"<%} else {%>id="step"<%}%>>Step 1 </th>
-                                <th <%if (proSteps == 2) {
-                                    %>id="active"<%} else {%>id="step"<%}%>>Step 2 </th>
-                                <th <%if (proSteps == 3) {
-                                    %>id="active"<%} else {%>id="step"<%}%>>Step 3 </th>
-                                <th <%if (proSteps == 4) {
-                                    %>id="active"<%} else {%>id="step"<%}%>>Step 4 </th>
-                                <th <%if (proSteps == 5) {
-                                    %>id="active"<%} else {%>id="step"<%}%>>Step 5 </th>
-                                <th <%if (proSteps == 6) {
-                                    %>id="active"<%} else {%>id="step"<%}%>>Step 6 </th>
-                                <th <%if (proSteps == 7) {
-                                    %>id="active"<%} else {%>id="step"<%}%>>Step 7 </th>
+                                <th <%if (proSteps == 1) {%>
+                                    id="active1"<%} else {%>class="step"<%}%>>Step 1 </th>
+                                <th <%if (proSteps == 2) {%>
+                                    id="active2"<%} else {%>class="step"<%}%>>Step 2 </th>
+                                <th <%if (proSteps == 3) {%>
+                                    id="active3"<%} else {%>class="step"<%}%>>Step 3 </th>
+                                <th <%if (proSteps == 4) {%>
+                                    id="active4"<%} else {%>class="step"<%}%>>Step 4 </th>
+                                <th <%if (proSteps == 5) {%>
+                                    id="active5"<%} else {%>class="step"<%}%>>Step 5 </th>
+                                <th <%if (proSteps == 6) {%>
+                                    id="active6"<%} else {%>class="step"<%}%>>Step 6 </th>
+                                <th <%if (proSteps == 7) {%>
+                                    id="active7"<%} else {%>class="step"<%}%>>Step 7 </th>
                             </tr>
                         </thead>
                     </table>
- 
+                             
                     <div id="list">
  
                         <h5>Status: <% if (proStatus == 0) {

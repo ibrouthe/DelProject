@@ -127,6 +127,8 @@
 
             <h3>Admin</h3>
             <ul class="toggle">
+                <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
+                <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
 
             </ul>
 
