@@ -146,6 +146,8 @@ public class PageControl extends HttpServlet {
                 request.getSession().setAttribute("clickedProject", updatedP);
                 response.sendRedirect("selectedProject.jsp");
 
+                break;
+                
             case "projectForm":
 
                 request.getSession().setAttribute("message", "you have created a project succesfully");
@@ -236,7 +238,7 @@ public class PageControl extends HttpServlet {
 
                 request.getSession().setAttribute("clickedPartner", pa);
                 response.sendRedirect("selectedPartner.jsp");
-                return;
+                return; //ud af case.. Break går ud af doGet
 
             case "employeeForm":
                 //request.getSession().setAttribute("message", "passwords do not match");
@@ -244,7 +246,7 @@ public class PageControl extends HttpServlet {
                 int empID = 0; //Dummy input. Skal autogenereres af database.
                 String empName = request.getParameter("empName");
                 String empMail = request.getParameter("empMail");
-                int empStatus = 0; //Dummy input. 
+                int empStatus = 1; //Dummy input. 
                 String empPass = request.getParameter("empPass");
                 String empPass1 = request.getParameter("empPass1");
 
@@ -262,6 +264,7 @@ public class PageControl extends HttpServlet {
 
                 }
                 return;
+                
 
             case "listEmployees":
 
