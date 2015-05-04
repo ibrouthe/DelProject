@@ -56,7 +56,7 @@ public class Employee {
 	return empMail;
     }
 
-    public void setEmpMail(String Mail) {
+    public void setEmpMail(String empMail) {
 	this.empMail = empMail;
     }
 

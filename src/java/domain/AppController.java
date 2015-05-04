@@ -66,11 +66,11 @@ public class AppController {
     }
 
     public boolean createNewPartner(int parId, String parName, String parAdress, String parPhone,
-            String eMail, String CVR, String parPass, int parFunds) {
+            String eMail, String CVR, String parPass, int parFunds, String contactName) {
 
         mapper = new Mapper();
 
-        return mapper.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+        return mapper.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
 
     }
 

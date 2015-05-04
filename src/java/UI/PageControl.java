@@ -117,9 +117,10 @@ public class PageControl extends HttpServlet {
                 String eMail = request.getParameter("eMail");
                 String CVR = request.getParameter("CVR");
                 int parFunds = 0; // Dummy input
+		String contactName = request.getParameter("contactName");
 
                 if (parPass.equals(parPass1)) {
-                    boolean ap = appcon.createNewPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+                    boolean ap = appcon.createNewPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
                     if (ap) {
                         response.sendRedirect("Dashboard.jsp");
                     } else {

@@ -161,7 +161,8 @@
                             <tr>
                                 <th>Select</th>
                                 <th>ID    </th> 
-                                <th>Name      </th> 
+                                <th>Name      </th>
+                                <th>Contact Name      </th>
                                 <th>Phone  </th> 
                                 <th>CVR  </th>
                                 <th>email  </th>
@@ -176,7 +177,8 @@
 
                                 <td><a href="PageControl?command=selectedPartner&param2=<%out.print(temp.getParID());%>">View Partner</a></td>
                                 <td><%out.print(temp.getParID());%></td> 
-                                <td><%out.print(temp.getParName());%></td> 
+                                <td><%out.print(temp.getParName());%></td>
+                                <td><%out.print(temp.getContactName());%></td>
                                 <td><%out.print(temp.getParPhone());%></td> 
                                 <td><%out.print(temp.getCVR());%></td>
                                 <td><%out.print(temp.geteMail());%></td>
