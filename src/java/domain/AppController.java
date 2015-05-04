@@ -13,15 +13,17 @@ import javax.servlet.http.Part;
 
 /**
  * lav ny mapper i constructor
+ *
  * @author Pc
  */
 public class AppController {
 
     Mapper mapper;
     // Mapper mapper = DbMapper.getInstance();
-    
-    public AppController() {}
-    
+
+    public AppController() {
+    }
+
     public AppController(Mapper mapper) {
         this.mapper = mapper;
     }
@@ -37,7 +39,20 @@ public class AppController {
         return showlist;
 
     }
+
+    public ArrayList listParProjects(String email) {
+
+        mapper = new Mapper();
+
+        ArrayList<Project> ownlist;
+
+        ownlist = mapper.listParProjects(email);
+
+        return ownlist;
+
+    }
 //Test at du får alle partners ud og at du kun kalder mappereren een gang
+
     public ArrayList listAllPartners() {
 
         mapper = new Mapper();
@@ -75,27 +90,36 @@ public class AppController {
         return mapper.checkParPw(user, pw);
 
     }
-    
-       public boolean checkEmpPassword(String user, String pw) {
+
+    public void parTimeStamp(String email) {
+        mapper = new Mapper();
+        
+        mapper.parTimeStamp(email);
+    }
+
+    public boolean checkEmpPassword(String user, String pw) {
 
         mapper = new Mapper();
 
         return mapper.checkEmpPw(user, pw);
 
     }
-       
-       
-       public String returnName(){
-       
-       return mapper.returnName();
-       
-       }
-       
-       public String returnRole(){
-       
-           return mapper.returnRole();
-       
-       }
+
+    public String returnName() {
+
+        return mapper.returnName();
+
+    }
+
+    public String returnRole() {
+
+        return mapper.returnRole();
+
+    }
+
+    public String returnEmail() {
+        return mapper.returnEmail();
+    }
 
     public Project listSelectedProject(String ClickedID) {
 
@@ -107,24 +131,24 @@ public class AppController {
 
         return p;
     }
-    
+
     public void approveProject(int proID, int choice) {
- 
+
         Mapper mapper = new Mapper();
- 
+
         mapper.updateApproveProject(proID, choice);
- 
+
     }
- 
+
     public void updateStep(Project currentPro) {
- 
+
         //metoden her skal ikke være i appController
         int currentProID = currentPro.getProID();
         int oldStep = currentPro.getProSteps();
         int newStep = oldStep;
         int currentStat = currentPro.getProStatus();
         String currentPOE = currentPro.getProPeo();
- 
+
         if (currentPOE.equals("POE_NULL") && oldStep > 5) {
             newStep = 5;
         }
@@ -136,7 +160,9 @@ public class AppController {
             }
             //active
             case 1: {
-                if (oldStep < 3) { newStep = 3; }
+                if (oldStep < 3) {
+                    newStep = 3;
+                }
                 break;
             }
             //inactive
@@ -149,13 +175,13 @@ public class AppController {
                 break;
             }
         }
- 
+
         // Metoden som skal være i AppController:
         Mapper mapper = new Mapper();
         mapper.updateStep(currentProID, newStep);
- 
+
     }
-    
+
     public Partner listSelectedPartner(String ClickedID) {
 
         Mapper mapper = new Mapper();
@@ -166,7 +192,7 @@ public class AppController {
 
         return pa;
     }
-    
+
     public boolean createNewEmployee(int empId, String empName, int empStatus, String empMail, String empPass) {
 
         mapper = new Mapper();
@@ -174,6 +200,7 @@ public class AppController {
         return mapper.addEmployee(empId, empName, empStatus, empMail, empPass);
 
     }
+
     public ArrayList listAllEmployees() {
 
         mapper = new Mapper();
@@ -185,6 +212,7 @@ public class AppController {
         return showlist;
 
     }
+
     public Employee listSelectedEmployee(String ClickedID) {
 
         Mapper mapper = new Mapper();
@@ -195,9 +223,5 @@ public class AppController {
 
         return em;
     }
-    
-    
-    
-    
 
 }

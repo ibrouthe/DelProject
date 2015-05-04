@@ -10,11 +10,15 @@
 
 <!doctype html>
 <html lang="en">
-    
+    <%String role = (String) session.getAttribute("role");%>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
     <head>
         <meta charset="utf-8"/>
         <title>Dell Partner Programme</title>
-        
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
@@ -22,7 +26,7 @@
         <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        
+
         <script src="js/jquery-1.5.2.min.js" type="text/javascript"></script>
         <script src="js/hideshow.js" type="text/javascript"></script>
         <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
@@ -73,6 +77,7 @@
         </header> <!-- end of header bar -->
 
         <section id="secondary_bar">
+
             <div class="user">
                 <p> <%
                     String username = (String) session.getAttribute("name");
@@ -96,41 +101,57 @@
                         this._haschanged = true;">
             </form>
             <hr/>
-            <h3>Projects</h3>
-            <ul class="toggle">
-                <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
-                <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
-            </ul>
-            
-            <div id="partnerTab" <% 
-            String role = (String)session.getAttribute("role");
-            
-            if(role.equalsIgnoreCase("partner")){
-            out.println("style=\"display:none\"");
-            }
-            
-                    
-            %>>
-            <h3>Partners</h3>
-            <ul class="toggle">
-                <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
-                <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
 
-            </ul>
+            <div id="projectsDiv">
+                <h3>Projects</h3>
+
+                <ul class="toggle">
+
+                    <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
+
+
+                    <%                        if (role.equalsIgnoreCase("partner")) {
+                    %>
+                    <li class="icn_folder"><a href="PageControl?command=listParProjects">View Projects</a><input type="hidden" name="command" value="listParProjects"></li>
+                        <%
+                        } else if (role.equalsIgnoreCase("employee")) {%>
+                    <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
+                        <% }%>
+
+                </ul></div>
+
+            <div id="partnerTab" <%
+
+                if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                }
+
+
+                 %>>
+                <h3>Partners</h3>
+                <ul class="toggle">
+                    <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
+                    <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
+
+                </ul>
             </div>
 
             <h3>StatisticS</h3>
             <ul class="toggle">
 
             </ul>
+            <div id="adminTab" <%                if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                }
 
 
-            <h3>Admin</h3>
-            <ul class="toggle">
-                <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
-                <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
+                 %>>
+                <h3>Admin</h3>
+                <ul class="toggle">
+                    <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
+                    <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
 
-            </ul>
+                </ul></div>
 
 
 

@@ -3,18 +3,24 @@
     Created on : Apr 21, 2015, 10:12:58 AM
     Author     : TOcvfan
 --%>
- 
+
 <%@page import="domain.Project"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "UI.PageControl"%>
- 
+
 <!doctype html>
 <html lang="en">
- 
+    <%String role = (String) session.getAttribute("role");%>
+
+
     <head>
         <meta charset="utf-8"/>
         <title>Dell Partner Programme</title>
- 
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+
+
         <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
         <!--[if lt IE 9]>
         <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
@@ -31,24 +37,24 @@
             }
             );
             $(document).ready(function () {
- 
+
                 //When page loads...
                 $(".tab_content").hide(); //Hide all content
                 $("ul.tabs li:first").addClass("active").show(); //Activate first tab
                 $(".tab_content:first").show(); //Show first tab content
- 
+
                 //On Click Event
                 $("ul.tabs li").click(function () {
- 
+
                     $("ul.tabs li").removeClass("active"); //Remove any "active" class
                     $(this).addClass("active"); //Add "active" class to selected tab
                     $(".tab_content").hide(); //Hide all tab content
- 
+
                     var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
                     $(activeTab).fadeIn(); //Fade in the active ID content
                     return false;
                 });
- 
+
             });
         </script>
         <script type="text/javascript">
@@ -56,18 +62,18 @@
                 $('.column').equalHeight();
             });
         </script>
- 
+
     </head>
- 
+
     <body>
- 
+
         <header id="header">
             <hgroup>
                 <h1 class="site_title"><a href="index.jsp">Dell Partner Management</a></h1>
                 <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="http://www.medialoot.com">View Site</a></div>
             </hgroup>
         </header> <!-- end of header bar -->
- 
+
         <section id="secondary_bar">
             <div class="user">
                 <p>John Doe (<a href="#">3 Messages</a>)</p>
@@ -77,48 +83,77 @@
                 <article class="breadcrumbs"><a href="index.html">Home</a> <div class="breadcrumb_divider"></div> <a class="current">Dashboard</a></article>
             </div>
         </section><!-- end of secondary bar -->
- 
+
         <aside id="sidebar" class="column">
             <form class="quick_search">
                 <input type="text" value="Quick Search" onfocus="if (!this._haschanged) {
-                           this.value = ''
-                       }
-                       ;
-                       this._haschanged = true;">
+                            this.value = ''
+                        }
+                        ;
+                        this._haschanged = true;">
             </form>
             <hr/>
-            <h3>Projects</h3>
-            <ul class="toggle">
-                <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
-                <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
-            </ul>
-            <h3>Partners</h3>
-            <ul class="toggle">
-                <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
-                <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
- 
-            </ul>
- 
+
+
+            <div id="projectsDiv">
+                <h3>Projects</h3>
+
+                <ul class="toggle">
+
+                    <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
+
+
+                    <%
+                        if (role.equalsIgnoreCase("partner")) {
+                    %>
+                    <li class="icn_folder"><a href="PageControl?command=listParProjects">View Projects</a><input type="hidden" name="command" value="listParProjects"></li>
+                        <%
+                        } else if (role.equalsIgnoreCase("employee")) {%>
+                    <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
+                        <% }%>
+
+                </ul></div>
+
+            <div id="partnerTab" <%
+
+                if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                }
+
+
+                 %>>
+                <h3>Partners</h3>
+                <ul class="toggle">
+                    <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
+                    <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
+
+                </ul>
+            </div>
+
             <h3>StatisticS</h3>
             <ul class="toggle">
- 
-            </ul>
- 
-           <h3>Admin</h3>
-            <ul class="toggle">
-                <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
-                <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
 
             </ul>
- 
+            <div id="adminTab" <%                if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                }
+
+
+                 %>>
+                <h3>Admin</h3>
+                <ul class="toggle">
+                    <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
+                    <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
+
+                </ul></div>
+
             <footer>
                 <hr />
                 <p><strong>Datamatiker 2. semesteropgave Gruppe 2</strong></p>
- 
+
             </footer>
         </aside><!-- end of sidebar -->
-        <%
-            Project selPro = new Project();
+        <%            Project selPro = new Project();
             selPro = (Project) session.getAttribute("clickedProject");
             int proID = selPro.getProID();
             int proEmpID = selPro.getProEmpID();
@@ -135,13 +170,13 @@
                     proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPeo,
                     proStatus, proSteps, proReqFunds, proFunds);
         %>
- 
+
         <section id="main" class="column">
             <article class="module width_full">
                 <header><h3><%out.println(pj.getProName());%></h3></header>
                 <div class="module_content">
- 
-                            <table border="0" width="950">
+
+                    <table border="0" width="950">
                         <thead>
                             <tr>
                                 <th <%if (proSteps == 1) {%>
@@ -161,9 +196,9 @@
                             </tr>
                         </thead>
                     </table>
-                             
+
                     <div id="list">
- 
+
                         <h5>Status: <% if (proStatus == 0) {
                                 out.println("Needs Approval");
                             } else if (proStatus == 1) {
@@ -190,8 +225,8 @@
                     <form name="Approved" action="PageControl" id="approval">
                         <button type="submit" name="command" value="approve"> Dismiss </button>
                         <input type="hidden" value="inactive" name="changeStatus">
-                       
-                       
+
+
                     </form>
                     <%}%>
                     <% if (proStatus != 0) {%> <p>Change Status:</p> <form action="PageControl"><select name="changeStatus">
@@ -202,20 +237,20 @@
                         </select><button type="submit" value="approve" name="command">Change Status</button>                    
                     </form>
                     <%};%>
- 
- 
+
+
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>
- 
+
             <div class="clear"></div>
         </div>
     </article><!-- end of stats article -->
- 
+
     <div class="clear"></div>
- 
+
 </section>
- 
+
 </body>
- 
+
 </html>

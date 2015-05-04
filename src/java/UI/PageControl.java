@@ -66,6 +66,27 @@ public class PageControl extends HttpServlet {
                 }
 
                 break;
+                
+                
+            case "listParProjects":
+                String pEmail = (String) session.getAttribute("email");
+                
+                ArrayList<Project> ownlist;
+
+                ownlist = appcon.listParProjects(pEmail);
+                
+                session = request.getSession();
+                session.setAttribute("returnlist", ownlist);
+
+                try {
+                    response.sendRedirect("listProjects.jsp");
+                } catch (Exception ee) {
+                }
+
+                break;
+
+                
+                
 
             case "listPartners":
 
@@ -147,7 +168,7 @@ public class PageControl extends HttpServlet {
                 response.sendRedirect("selectedProject.jsp");
 
                 break;
-                
+
             case "projectForm":
 
                 request.getSession().setAttribute("message", "you have created a project succesfully");
@@ -190,10 +211,12 @@ public class PageControl extends HttpServlet {
                 session = request.getSession();
                 String pname = appcon.returnName();
                 String prole = appcon.returnRole();
-
+                String pmail = appcon.returnEmail();
+                
                 session.setAttribute("role", prole);
                 session.setAttribute("name", pname);
-
+                session.setAttribute("email", pmail);
+                
                 return;
 
             case "employeeLogin":
@@ -214,9 +237,12 @@ public class PageControl extends HttpServlet {
                 session = request.getSession();
                 String ename = appcon.returnName();
                 String erole = appcon.returnRole();
-
+                String email = appcon.returnEmail();
+                
                 session.setAttribute("role", erole);
                 session.setAttribute("name", ename);
+                session.setAttribute("email", email);
+                
                 return;
 
             case "selectedProject":
@@ -264,7 +290,6 @@ public class PageControl extends HttpServlet {
 
                 }
                 return;
-                
 
             case "listEmployees":
 
@@ -292,7 +317,8 @@ public class PageControl extends HttpServlet {
                 return;
 
             case "logout":
-
+                String logoutEmail = (String) session.getAttribute("email");
+                appcon.parTimeStamp(logoutEmail);
                 session.invalidate();
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
 

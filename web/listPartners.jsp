@@ -16,6 +16,8 @@
     <head>
         <meta charset="utf-8"/>
         <title>Dell Partner Programme</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
 
         <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
         <!--[if lt IE 9]>
@@ -62,7 +64,7 @@
     </head>
 
 
-<body>
+    <body>
 
         <header id="header">
             <hgroup>
@@ -98,22 +100,22 @@
             <h3>Projects</h3>
             <ul class="toggle">
                 <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
-                 <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
+                <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
             </ul>
             <h3>Partners</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
-                 <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
-           
+                <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
+
             </ul>
 
 
             <h3>StatisticS</h3>
             <ul class="toggle">
-               
-                
-                
-                
+
+
+
+
             </ul>
 
 
@@ -123,15 +125,15 @@
 
 
 
-           <h3>Admin</h3>
+            <h3>Admin</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
                 <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
 
             </ul>
 
-           
-            
+
+
             <footer>
                 <hr />
                 <p><strong>Datamatiker 2. semesteropgave Gruppe 2</strong></p>
@@ -152,10 +154,10 @@
                 <header><h3>Partners in Database</h3></header>
                 <div class="module_content">
 
-<% ArrayList<Partner> newlist = new ArrayList();
+                    <% ArrayList<Partner> newlist = new ArrayList();
 
                         newlist = (ArrayList<Partner>) session.getAttribute("returnpartnerlist");
-                        %><table  border="1" width="850"> <thead>
+                    %><table  border="1" width="850"> <thead>
                             <tr>
                                 <th>Select</th>
                                 <th>ID    </th> 
@@ -163,26 +165,26 @@
                                 <th>Phone  </th> 
                                 <th>CVR  </th>
                                 <th>email  </th>
-                                
+
                             </tr> 
                         </thead> <tbody>
 
                             <%
-                        for (Partner temp : newlist) {
+                                for (Partner temp : newlist) {
                             %>
                             <tr>
-                                
+
                                 <td><a href="PageControl?command=selectedPartner&param2=<%out.print(temp.getParID());%>">View Partner</a></td>
                                 <td><%out.print(temp.getParID());%></td> 
                                 <td><%out.print(temp.getParName());%></td> 
                                 <td><%out.print(temp.getParPhone());%></td> 
                                 <td><%out.print(temp.getCVR());%></td>
                                 <td><%out.print(temp.geteMail());%></td>
-                                
+
                             </tr>  
                             <%}%></tbody> </table>
 
-                
+
                 </div>
             </article><!-- end of styles article -->
             <div class="spacer"></div>
