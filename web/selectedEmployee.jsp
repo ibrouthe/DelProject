@@ -124,7 +124,7 @@
             
             Employee em = new Employee(
                     empID, empName, status, eMail, empPass);
-            request.getSession().removeAttribute("clickedEmployee");
+            //request.getSession().removeAttribute("clickedEmployee");
 
         %>
 

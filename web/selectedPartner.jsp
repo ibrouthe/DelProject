@@ -125,10 +125,11 @@
             String CVR = selPar.getCVR();
             String parPass = selPar.getParPass();
             int parFunds = selPar.getParFunds();
+            String contactName = selPar.getContactName();
             
             Partner p = new Partner(
                     parID, parName, parAdress, parPhone, eMail,
-                    CVR, parPass, parFunds);
+                    CVR, parPass, parFunds, contactName);
             request.getSession().removeAttribute("clickedPartner");
 
         %>
@@ -140,7 +141,7 @@
 
                     <div id="list">
 
-                        
+                        <h5>Contact Name: <%out.println(p.getContactName());%></h5>
                         <h5>Address: <%out.println(p.getParAdress());%></h5>
                         <h5>Phone: <%out.println(p.getParPhone());%></h5>
                         <h5>eMail: <%out.println(p.geteMail());%></h5>

@@ -72,6 +72,7 @@
             <h1>Create new partner:</h1>
             <form name="partnerForm" action="PageControl" id="form">
                 <p>Name:</p><input type="text" name="parName" value="" size="50" />
+                <p>Contact Name:</p><input type="text" name="contactName" value="" size="50" />
                 <p>Address:</p><input type="text" name="parAdress" value="" size="50" />   
                 <p>Phone:</p><input type="text" name="parPhone" value="" size="50" />
                 <p>Password:</p><input type="password" name="parPass" value="" required id="password1" size="50" />

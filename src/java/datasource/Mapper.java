@@ -250,14 +250,14 @@ public class Mapper {
     }
     
     public boolean addPartner(int parId, String parName, String parAdress, String parPhone,
-            String eMail, String CVR, String parPass, int parFunds) {
+            String eMail, String CVR, String parPass, int parFunds, String contactName) {
         
-        Partner p = new Partner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+        Partner p = new Partner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
         if (checkInputPartner(p) == true) {
             int rowsInserted = 0;
             
             String sql = "INSERT INTO Partner VALUES(parSeq.nextval,'" + p.getParName() + "','" + p.getParAdress() + "','"
-                    + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds() + ")";
+                    + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds()+ ",'" + p.getContactName() + "')";
             
             PreparedStatement statement1 = null;
             PreparedStatement statement2 = null;
