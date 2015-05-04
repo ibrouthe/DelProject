@@ -37,7 +37,7 @@ public class Partner {
 	return contactName;
     }
 
-    public void setContactName(String kontactName) {
+    public void setContactName(String contactName) {
 	this.contactName = contactName;
     }
 

@@ -220,6 +220,7 @@ public class Mapper {
                 partner.seteMail(rs.getString(5));
                 partner.setCVR(rs.getString(6));
                 partner.setParFunds(rs.getInt(7));
+		partner.setContactName(rs.getString(9));
                 
                 list.add(partner);
                 
@@ -835,8 +836,8 @@ public class Mapper {
                 selPartner.setParPhone(rs.getString(4));
                 selPartner.seteMail(rs.getString(5));
                 selPartner.setCVR(rs.getString(6));
-                selPartner.setParPass(rs.getString(7));
-                selPartner.setParFunds(rs.getInt(8));
+                selPartner.setParFunds(rs.getInt(7));
+		selPartner.setContactName(rs.getString(9));
                 
                 System.out.println("DEBUGGER " + selPartner);
                 

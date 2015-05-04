@@ -213,8 +213,8 @@
                         <h5>Requested funds: <%out.println(pj.getProReqFunds());%></h5>
                         <h5>Funds: <%out.println(pj.getProFunds());%></h5>
                         <h5>Project Id: <%out.println(pj.getProID());%></h5>
-                        <h5>Employee Id: <%out.println(pj.getProEmpID());%></h5>
-                        <h5>Partner Id: <%out.println(pj.getProParID());%></h5>
+                        <h5>Employee Id: <a href="PageControl?command=selectedEmployee&param3=<%out.println(pj.getProEmpID());%>"><%out.println(pj.getProEmpID());%></a></h5>
+                        <h5>Partner Id: <a href="PageControl?command=selectedPartner&param2=<%out.print(pj.getProParID());%>">Partner Id: <%out.println(pj.getProParID());%></a></h5>
                     </div>
                     <%
                         if (proStatus == 0) {%>
@@ -244,8 +244,8 @@
             <div class="spacer"></div>
 
             <div class="clear"></div>
-        </div>
-    </article><!-- end of stats article -->
+       
+    
 
     <div class="clear"></div>
 
