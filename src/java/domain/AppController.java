@@ -40,6 +40,53 @@ public class AppController {
 
     }
 
+    public ArrayList searchProjects(String searchField) {
+        mapper = new Mapper();
+
+        ArrayList<Project> searchList;
+
+        searchList = mapper.searchProjects(searchField);
+
+        return searchList;
+
+    }
+
+        public ArrayList searchParProjects(String searchField, String email) {
+        mapper = new Mapper();
+
+        ArrayList<Project> searchList;
+
+        searchList = mapper.searchParProjects(searchField, email);
+
+        return searchList;
+
+    }
+    
+    public ArrayList searchPartners(String searchField) {
+        mapper = new Mapper();
+
+        ArrayList<Partner> searchList;
+
+        searchList = mapper.searchPartner(searchField);
+
+        return searchList;
+
+    }
+    
+    
+    
+
+    public ArrayList searchEmployees(String searchField) {
+        mapper = new Mapper();
+
+        ArrayList<Employee> searchList;
+
+        searchList = mapper.searchEmployee(searchField);
+
+        return searchList;
+
+    }
+
     public ArrayList listParProjects(String email) {
 
         mapper = new Mapper();
@@ -93,7 +140,7 @@ public class AppController {
 
     public void parTimeStamp(String email) {
         mapper = new Mapper();
-        
+
         mapper.parTimeStamp(email);
     }
 

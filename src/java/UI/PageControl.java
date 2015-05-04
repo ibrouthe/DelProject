@@ -48,8 +48,10 @@ public class PageControl extends HttpServlet {
         appcon = new AppController();
 
         String command = request.getParameter("command");
-
+        
+        
         switch (command) {
+            
             case "listProjects":
 
                 ArrayList<Project> showlist;
@@ -69,11 +71,11 @@ public class PageControl extends HttpServlet {
                 
                 
             case "listParProjects":
-                String pEmail = (String) session.getAttribute("email");
+                String parEmail = (String) session.getAttribute("email");
                 
                 ArrayList<Project> ownlist;
 
-                ownlist = appcon.listParProjects(pEmail);
+                ownlist = appcon.listParProjects(parEmail);
                 
                 session = request.getSession();
                 session.setAttribute("returnlist", ownlist);
@@ -105,6 +107,40 @@ public class PageControl extends HttpServlet {
 
                 break;
 
+            case "search":
+                
+                
+                ArrayList<Project> searchParProjects;
+                ArrayList<Project> searchProjects;
+                ArrayList<Partner> searchPartners;
+                ArrayList<Employee> searchEmployees;
+                
+                
+                String pEmail = (String) session.getAttribute("email");
+                String searchField = request.getParameter("searchField");
+                //String searchField = "silas";
+                
+                searchParProjects = appcon.searchParProjects(searchField, pEmail);
+                searchProjects = appcon.searchProjects(searchField);
+                searchPartners = appcon.searchPartners(searchField);
+                searchEmployees = appcon.searchEmployees(searchField);
+                
+                session = request.getSession();
+                
+                session.setAttribute("searchParProjects", searchParProjects);
+                session.setAttribute("searchProjects", searchProjects);
+                session.setAttribute("searchPartners", searchPartners);
+                session.setAttribute("searchEmployees", searchEmployees);
+                
+                  try {
+                    response.sendRedirect("Search.jsp");
+                } catch (Exception ee) {
+
+                }
+
+                break;
+                
+                
             case "partnerForm":
 
                 request.getSession().setAttribute("message", "you have registrated succesfully");

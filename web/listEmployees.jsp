@@ -86,12 +86,16 @@
         </section><!-- end of secondary bar -->
 
         <aside id="sidebar" class="column">
-            <form class="quick_search">
-                <input type="text" value="Quick Search" onfocus="if (!this._haschanged) {
+             <form class="quick_search" action="PageControl" id="form">
+                <input type="text" name="searchField" value="Quick Search" onfocus="if (!this._haschanged) {
                             this.value = ''
                         }
                         ;
                         this._haschanged = true;">
+                <input type="hidden" name="command" value="search" />
+                
+                
+                
             </form>
             <hr/>
             <h3>Projects</h3>
