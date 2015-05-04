@@ -537,7 +537,7 @@ public class Mapper {
     
     public void getParName(String email) {
         
-        String sql = "SELECT PARNAME FROM PARTNER WHERE PAREMAIL LIKE '" + email + "'";
+        String sql = "SELECT CONTACTNAME FROM PARTNER WHERE PAREMAIL LIKE '" + email + "'";
         
         PreparedStatement statement = null;
         
