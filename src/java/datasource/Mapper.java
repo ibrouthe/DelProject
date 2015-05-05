@@ -159,23 +159,23 @@ public class Mapper {
 
     public ArrayList<Project> searchProjects(String searchField) {
         ArrayList<Project> list = new ArrayList<Project>();
-        
+
         String search = searchField;
-        
+
         String sql = "SELECT * FROM PROJECT WHERE UPPER(PRONAME) LIKE UPPER('%" + search + "%')";
 
         statement = null;
-        
-         try (Connection con = DBconnector.getInstance().getConnection()) {
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
 
             statement = con.prepareStatement(sql);
 
             rs = statement.executeQuery();
 
             while (rs.next()) {
-            
+
                 Project project = new Project();
-                
+
                 project.setProID(rs.getInt(1));
                 project.setProEmpID(rs.getInt(2));
                 project.setProParID(rs.getInt(3));
@@ -214,33 +214,33 @@ public class Mapper {
 
         return list;
     }
-    
+
     public ArrayList<Project> searchParProjects(String searchField, String email) {
-        
+
         ul = new UserLogin();
 
         getParID(email);
-        
+
         String parID = ul.getId();
-        
+
         ArrayList<Project> list = new ArrayList<Project>();
-        
+
         String search = searchField;
-        
+
         String sql = "SELECT * FROM PROJECT WHERE PROPARID LIKE '" + parID + "' AND UPPER(PRONAME) LIKE UPPER('%" + search + "%')";
 
         statement = null;
-        
-         try (Connection con = DBconnector.getInstance().getConnection()) {
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
 
             statement = con.prepareStatement(sql);
 
             rs = statement.executeQuery();
 
             while (rs.next()) {
-            
+
                 Project project = new Project();
-                
+
                 project.setProID(rs.getInt(1));
                 project.setProEmpID(rs.getInt(2));
                 project.setProParID(rs.getInt(3));
@@ -279,11 +279,11 @@ public class Mapper {
 
         return list;
     }
-    
+
     public ArrayList<Partner> searchPartner(String searchField) {
 
         ArrayList<Partner> list = new ArrayList<Partner>();
-        
+
         String search = searchField;
 
         String SQLString = "SELECT * FROM PARTNER WHERE UPPER(PARNAME)  LIKE UPPER('%" + search + "%')";
@@ -306,6 +306,8 @@ public class Mapper {
                 partner.seteMail(rs.getString(5));
                 partner.setCVR(rs.getString(6));
                 partner.setParFunds(rs.getInt(7));
+
+                partner.setContactName(rs.getString(9));
 
                 list.add(partner);
 
@@ -339,7 +341,7 @@ public class Mapper {
 
         ArrayList<Employee> list = new ArrayList<Employee>();
         String search = searchField;
-        
+
         String sql = "SELECT * FROM EMPLOYEE WHERE UPPER(EMPNAME) LIKE UPPER('%" + search + "%')";
         PreparedStatement statement = null;
 
@@ -357,7 +359,6 @@ public class Mapper {
                 employee.setEmpName(rs.getString(2));
                 employee.setEmpStatus(rs.getInt(3));
                 employee.setEmpMail(rs.getString(4));
-                
 
                 list.add(employee);
 
@@ -386,8 +387,6 @@ public class Mapper {
         return list;
 
     }
-
-
 
     public void parTimeStamp(String email) {
         dt = new DateTime();
@@ -1067,8 +1066,12 @@ public class Mapper {
                 selPartner.setParPhone(rs.getString(4));
                 selPartner.seteMail(rs.getString(5));
                 selPartner.setCVR(rs.getString(6));
+
                 selPartner.setParPass(rs.getString(7));
                 selPartner.setParFunds(rs.getInt(8));
+
+                selPartner.setParFunds(rs.getInt(7));
+                selPartner.setContactName(rs.getString(9));
 
                 System.out.println("DEBUGGER " + selPartner);
 
