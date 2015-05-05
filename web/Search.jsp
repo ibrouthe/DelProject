@@ -179,7 +179,7 @@
                         
                     if (searchParProjects != null && searchParProjects.size() > 0) {
 
-                    %><table class="table-"  border="1" width="850"> <thead>
+                    %><table class="table-condensed"  border="1" width="850"> <thead>
                             <tr>
                                 <th>Select</th>
                                 <th>ID    </th> 
@@ -219,7 +219,7 @@
                         
                     if (searchProjects != null && searchProjects.size() > 0) {
 
-                    %><table class="table-"  border="1" width="850"> <thead>
+                    %><table class="table-condensed"  border="1" width="850"> <thead>
                             <tr>
                                 <th>Select</th>
                                 <th>ID    </th> 
@@ -264,7 +264,7 @@
 
                         if (searchPartners != null && searchPartners.size() > 0) {
 
-                    %><table  border="1" width="850"> <thead>
+                    %><table class="table-condensed" border="1" width="850"> <thead>
                             <tr>
                                 <th>Select</th>
                                 <th>ID    </th> 
@@ -307,7 +307,7 @@
 
                         ArrayList<Employee> searchEmployees = (ArrayList<Employee>) session.getAttribute("searchEmployees");
                         if (searchEmployees != null && searchEmployees.size() > 0) {
-                    %><table  border="1" width="850"> <thead>
+                    %><table class="table-condensed" border="1" width="850"> <thead>
                             <tr>
                                 <th>Select</th>
                                 <th>ID    </th> 
