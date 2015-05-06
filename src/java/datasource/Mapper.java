@@ -452,6 +452,7 @@ public class Mapper {
                 partner.setCVR(rs.getString(6));
                 partner.setParFunds(rs.getInt(7));
                 partner.setContactName(rs.getString(9));
+		
                 list.add(partner);
 
             }
@@ -482,14 +483,17 @@ public class Mapper {
 
     public boolean addPartner(int parId, String parName, String parAdress, String parPhone,
             String eMail, String CVR, String parPass, int parFunds, String contactName) {
+	dt = new DateTime();
+	String time = dt.timeStamp();
 
         Partner p = new Partner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
         if (checkInputPartner(p) == true) {
             int rowsInserted = 0;
 
             String sql = "INSERT INTO Partner VALUES(parSeq.nextval,'" + p.getParName() + "','" + p.getParAdress() + "','"
-                    + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds() + ",'" + p.getContactName() + "')";
-
+                    + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds() + ",'" + time + "','"  + p.getContactName() + "')";
+	    
+	    
             PreparedStatement statement1 = null;
             PreparedStatement statement2 = null;
 
@@ -504,7 +508,7 @@ public class Mapper {
                 statement1 = con.prepareStatement(SQLString);
 
                 rs = statement1.executeQuery();
-
+		
                 while (rs.next()) {
 
                     createdParID = rs.getInt(1);
@@ -520,6 +524,8 @@ public class Mapper {
             } catch (SQLException ee) {
 
                 printSQLException(ee);
+		System.out.println("Fail1 in Partner details - addPartner");
+		System.out.println(ee.getMessage());
 
             } finally {
                 try {
@@ -527,13 +533,16 @@ public class Mapper {
                         rs.close();
                     }
                 } catch (Exception e) {
-
+		    System.out.println("Fail2 in Partner details - addPartner");
+		    System.out.println(e.getMessage());
                 };
                 try {
                     if (statement != null) {
                         statement.close();
                     }
                 } catch (Exception e) {
+		    System.out.println("Fail3 in Partner details - addPartner");
+		    System.out.println(e.getMessage());
                 };
             }
             return rowsInserted == 1;
