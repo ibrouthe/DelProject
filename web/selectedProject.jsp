@@ -4,6 +4,7 @@
     Author     : TOcvfan
 --%>
  
+<%@page import="java.io.InputStream"%>
 <%@page import="domain.Project"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "UI.PageControl"%>
@@ -126,7 +127,7 @@
             String proName = selPro.getProName();
             String proStartDate = selPro.getProStartDate();
             String proEndDate = selPro.getProEndDate();
-            String proPeo = selPro.getProPeo();
+            InputStream proPeo = selPro.getProPeo();
             int proStatus = selPro.getProStatus();
             int proSteps = selPro.getProSteps();
             int proFunds = selPro.getProFunds();
@@ -180,6 +181,8 @@
                         <h5>Project Id: <%out.println(pj.getProID());%></h5>
                         <h5>Employee Id: <%out.println(pj.getProEmpID());%></h5>
                         <h5>Partner Id: <%out.println(pj.getProParID());%></h5>
+                        <h5>POE: <% if(pj.getProPeo() != null) {out.println("--- A POE has been uploaded! ---");}
+                        else{out.println(" --- No POE uploaded yet! ---");};  %></h5>
                     </div>
                     <%
                         if (proStatus == 0) {%>
@@ -189,9 +192,7 @@
                     </form>
                     <form name="Approved" action="PageControl" id="approval">
                         <button type="submit" name="command" value="approve"> Dismiss </button>
-                        <input type="hidden" value="inactive" name="changeStatus">
-                       
-                       
+                        <input type="hidden" value="inactive" name="changeStatus">                   
                     </form>
                     <%}%>
                     <% if (proStatus != 0) {%> <p>Change Status:</p> <form action="PageControl"><select name="changeStatus">
@@ -202,6 +203,13 @@
                         </select><button type="submit" value="approve" name="command">Change Status</button>                    
                     </form>
                     <%};%>
+                    <br>
+                    
+                    <form name="uploadForm" action="PageControl" method="post" enctype="multipart/form-data">
+                    <input type="file" name="photo" value="" width="50" />
+                    <button type="submit" value="uploadPOE" name="command">Upload_POE</button>
+                    <input type="hidden" name="clickedID" value="<%out.println(pj.getProID());%>" />
+                    </form>
  
  
                 </div>

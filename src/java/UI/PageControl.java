@@ -11,8 +11,10 @@ import domain.Employee;
 import domain.Partner;
 import domain.Project;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,7 @@ import javax.servlet.http.Part;
  *
  * @Gruppe 2 Silas, Thomas, Christian, Martin, Ib
  */
+@MultipartConfig(maxFileSize = 16177215) // upload file up to 16MB
 @WebServlet(name = "PageControl", urlPatterns = {"/PageControl"})
 public class PageControl extends HttpServlet {
 
@@ -48,6 +51,7 @@ public class PageControl extends HttpServlet {
         appcon = new AppController();
 
         String command = request.getParameter("command");
+        System.out.println("from pageControl: " + command);
 
         switch (command) {
             case "listProjects":
@@ -66,6 +70,49 @@ public class PageControl extends HttpServlet {
                 }
 
                 break;
+
+            case "listRelevantProjects":
+
+                String role = (String) session.getAttribute("role");
+                String name = (String) session.getAttribute("name");
+                ArrayList<Project> showRelList;
+
+                showRelList = appcon.listRelevantProjects(name, role);
+
+                session = request.getSession();
+                session.setAttribute("showRelList", showRelList);
+
+                try {
+
+                    response.sendRedirect("Dashboard.jsp");
+                } catch (Exception ee) {
+
+                }
+
+                break;
+
+            case "uploadPOE":
+                
+                String clickedID = request.getParameter("clickedID");           
+
+                System.out.println("Vi er i uploadPOE case!");
+                InputStream iS = null;
+                
+                Part filePart = request.getPart("photo");
+                if (filePart != null) {
+                    // debug messages  
+                    System.out.println(filePart.getName());
+                    System.out.println(filePart.getSize());
+                    System.out.println(filePart.getContentType());
+
+                    // obtains input stream of the upload file  
+                    iS = filePart.getInputStream();
+                } else{ System.out.println("filePart is Null!");}
+                appcon.uploadPOE(iS, clickedID);
+                System.out.println("Vi kom sikkert igennem uploadPOE case!!!");
+                response.sendRedirect("PageControl?command=listRelevantProjects");
+                break;           
+            
 
             case "listPartners":
 
@@ -144,10 +191,10 @@ public class PageControl extends HttpServlet {
                 appcon.updateStep(updatedP);
                 updatedP = appcon.listSelectedProject("" + selPro.getProID());
                 request.getSession().setAttribute("clickedProject", updatedP);
-                response.sendRedirect("selectedProject.jsp");
+               // response.sendRedirect("selectedProject.jsp");
 
                 break;
-                
+
             case "projectForm":
 
                 request.getSession().setAttribute("message", "you have created a project succesfully");
@@ -158,14 +205,14 @@ public class PageControl extends HttpServlet {
                 String proName = request.getParameter("proName");
                 String proStartDate = request.getParameter("proStartDate");
                 String proEndDate = request.getParameter("proEndDate");
-                String proPOE = "This is a proPOE"; //Dummy input
-                int proStatus = Integer.parseInt(request.getParameter("proStatus")); //Dummy input
+                InputStream proPOE = null; //Dummy input
+                int proStatus = 2; //Dummy input
                 int proSteps = 1; //Dummy input
                 int proReqFunds = Integer.parseInt(request.getParameter("proReqFunds"));
                 int proFunds = 5000; //Dummy input
 
 //                filePart = request.getPart("photo");    
-                boolean aPro = appcon.createNewProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds, filePart);
+                boolean aPro = appcon.createNewProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
                 if (aPro) {
                     response.sendRedirect("Dashboard.jsp");
                 } else {
@@ -180,7 +227,7 @@ public class PageControl extends HttpServlet {
                 boolean checkParPw = appcon.checkParPassword(user, pass);
 
                 if (checkParPw == true) {
-                    response.sendRedirect("Dashboard.jsp");
+                    response.sendRedirect("PageControl?command=listRelevantProjects");
                     System.out.println("You are now logged in as: " + user + "!");
                 } else {
                     response.sendRedirect("PartnerLogin.jsp");
@@ -203,8 +250,8 @@ public class PageControl extends HttpServlet {
                 boolean checkEmpPw = appcon.checkEmpPassword(eUser, ePass);
 
                 if (checkEmpPw == true) {
-
-                    response.sendRedirect("Dashboard.jsp");
+                    response.sendRedirect("PageControl?command=listRelevantProjects");
+                    System.out.println("You are now logged in as: " + eUser + "!");
 
                 } else {
                     response.sendRedirect("EmployeeLogin.jsp");
@@ -264,7 +311,6 @@ public class PageControl extends HttpServlet {
 
                 }
                 return;
-                
 
             case "listEmployees":
 

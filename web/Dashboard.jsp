@@ -4,6 +4,8 @@
     Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="domain.Project"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "UI.PageControl"%>
 
@@ -188,6 +190,44 @@
                     <div class="clear"></div>
                 </div>
             </article><!-- end of stats article -->
+            
+            <% ArrayList<Project> newRelList = new ArrayList();
+                        newRelList = (ArrayList<Project>) session.getAttribute("showRelList"); 
+                    %>
+                    
+            <article class="module width_full">
+                <header><h3>Relevant Projects</h3></header>
+                <div class="module_content">                    
+                    
+                    <table class="table-"  border="1" width="850"> <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>ID    </th> 
+                                <th>Name      </th> 
+                                <th>Start Date</th> 
+                                <th>End Date  </th>
+                                <th>Step  </th>
+                                <th>Status</th>
+                            </tr> 
+                        </thead> <tbody>
+
+                            <%
+                                for (Project temp : newRelList) {
+                            %>
+                            <tr>
+                                <td><a href="PageControl?command=selectedProject&param1=<%out.print(temp.getProID());%>">View Project</a></td> 
+                                <%//System.out.println(temp.getProID());%>
+                                <td><%out.print(temp.getProID());%></td> 
+                                <td><%out.print(temp.getProName());%></td> 
+                                <td><%out.print(temp.getProStartDate());%></td> 
+                                <td><%out.print(temp.getProEndDate());%></td>
+                                <td><%out.print(temp.getProSteps());%></td>
+                                <td><%out.print(temp.getProStatus());%></td>
+                            </tr>  
+                            <%}%></tbody> </table>
+
+                </div>
+            </article><!-- end of styles article -->
 
 
 

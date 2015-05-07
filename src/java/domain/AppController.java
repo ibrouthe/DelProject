@@ -7,6 +7,7 @@ package domain;
 
 import datasource.DBconnector;
 import datasource.Mapper;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.servlet.http.Part;
@@ -60,12 +61,20 @@ public class AppController {
     }
 
     public boolean createNewProject(int proID, int proEmpID, int proParID, String proName, String proStartDate,
-            String proEndDate, String proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds, Part filePart) {
+            String proEndDate, InputStream proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds) {
 
         mapper = new Mapper();
 
-        return mapper.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds, filePart);
+        return mapper.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
 
+    }
+    
+    public void uploadPOE (InputStream iS, String clickedID) {
+    
+        mapper = new Mapper();
+        
+        mapper.uploadPOE(iS, clickedID);
+    
     }
 
     public boolean checkParPassword(String user, String pw) {
@@ -96,6 +105,19 @@ public class AppController {
            return mapper.returnRole();
        
        }
+       
+       public ArrayList listRelevantProjects(String name, String role) {
+
+        
+        mapper = new Mapper();
+
+        ArrayList<Project> showRelList;
+
+        showRelList = mapper.listRelevantProjects(name, role);
+
+        return showRelList;
+
+    }
 
     public Project listSelectedProject(String ClickedID) {
 
@@ -123,9 +145,9 @@ public class AppController {
         int oldStep = currentPro.getProSteps();
         int newStep = oldStep;
         int currentStat = currentPro.getProStatus();
-        String currentPOE = currentPro.getProPeo();
+        InputStream currentPOE = currentPro.getProPeo();
  
-        if (currentPOE.equals("POE_NULL") && oldStep > 5) {
+        if (currentPOE == null && oldStep > 5) {
             newStep = 5;
         }
         switch (currentStat) {

@@ -5,6 +5,8 @@
  */
 package domain;
 
+import java.io.InputStream;
+
 /**
  *
  * @Gruppe 2 Silas, Thomas, Christian, Martin, Ib
@@ -17,7 +19,7 @@ public class Project {
     String proName;
     String proStartDate;
     String proEndDate;
-    String proPeo;
+    InputStream proPeo;
     int proStatus;
     int proSteps;
     int proReqFunds;
@@ -26,9 +28,7 @@ public class Project {
     public Project(){
     
     
-    }
-
-    
+    } 
     
     
     public Project(int proID, int proEmpID, int proParID, String proName, String proStartDate, String proEndDate, int proReqFunds) {
@@ -41,7 +41,7 @@ public class Project {
         this.proReqFunds = proReqFunds;
     }
 
-    public Project(int proID, int proEmpID, int proParID, String proName, String proStartDate, String proEndDate, String proPeo, int proStatus, int proSteps, int proReqFunds, int proFunds) {
+    public Project(int proID, int proEmpID, int proParID, String proName, String proStartDate, String proEndDate, InputStream proPeo, int proStatus, int proSteps, int proReqFunds, int proFunds) {
         this.proID = proID;
         this.proEmpID = proEmpID;
         this.proParID = proParID;
@@ -106,11 +106,11 @@ public class Project {
         this.proEndDate = proEndDate;
     }
 
-    public String getProPeo() {
+    public InputStream getProPeo() {
         return proPeo;
     }
 
-    public void setProPeo(String proPeo) {
+    public void setProPeo(InputStream proPeo) {
         this.proPeo = proPeo;
     }
 

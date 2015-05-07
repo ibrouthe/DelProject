@@ -50,7 +50,6 @@ public class Mapper {
             rs = statement.executeQuery();
 
             while (rs.next()) {
-
                 Project project = new Project();
 
                 project.setProID(rs.getInt(1));
@@ -59,7 +58,7 @@ public class Mapper {
                 project.setProName(rs.getString(4));
                 project.setProStartDate(rs.getString(5));
                 project.setProEndDate(rs.getString(6));
-                project.setProPeo(rs.getString(7));
+                project.setProPeo(rs.getBinaryStream(7));
                 project.setProStatus(rs.getInt(8));
                 project.setProSteps(rs.getInt(9));
                 project.setProReqFunds(rs.getInt(10));
@@ -176,7 +175,7 @@ public class Mapper {
                     createdParID = rs.getInt(1);
 
                 }
-                String SQLparUserTable = "INSERT INTO PARUSER VALUES("+ createdParID + ",'" + p.getParPass() + "')";
+                String SQLparUserTable = "INSERT INTO PARUSER VALUES(" + createdParID + ",'" + p.getParPass() + "')";
 
                 statement2 = con.prepareStatement(SQLparUserTable);
 
@@ -208,7 +207,7 @@ public class Mapper {
     }
 
     public boolean addProject(int proID, int proEmpID, int proParID, String proName, String proStartDate,
-            String proEndDate, String proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds, Part filePart) {
+            String proEndDate, InputStream proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds) {
 
         Project pro = new Project(0, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE,
                 proStatus, proSteps, proReqFunds, proFunds);
@@ -217,7 +216,7 @@ public class Mapper {
             int rowsInserted = 0;
 
             String sql = "INSERT INTO PROJECT VALUES(proSeq.nextval," + pro.getProEmpID() + "," + pro.getProParID() + ",'"
-                    + pro.getProName() + "','" + pro.getProStartDate() + "','" + pro.getProEndDate() + "','PEO_NULL',0,2,"
+                    + pro.getProName() + "','" + pro.getProStartDate() + "','" + pro.getProEndDate() + "',null,0,2,"
                     + pro.getProReqFunds() + ",100)";
 
             PreparedStatement statement = null;
@@ -257,6 +256,105 @@ public class Mapper {
             return rowsInserted == 1;
         }
         return true;
+    }
+
+    public ArrayList<Project> listRelevantProjects(String name, String role) {
+
+        int firstStep = 0;
+        int secondStep = 0;
+
+        if (role.equals("employee")) {
+            firstStep = 2;
+            secondStep = 5;
+        }
+        if (role.equals("partner")) {
+            firstStep = 1;
+            secondStep = 4;
+        }
+
+        ArrayList<Project> relList = new ArrayList<Project>();
+
+        String SQLString = "SELECT * FROM Project WHERE prosteps = " + firstStep + " OR prosteps = " + secondStep + "";
+        System.out.println("sql String in Mapper -> " + SQLString);
+        statement = null;
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+
+            statement = con.prepareStatement(SQLString);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+
+                Project project = new Project();
+
+                project.setProID(rs.getInt(1));
+                project.setProEmpID(rs.getInt(2));
+                project.setProParID(rs.getInt(3));
+                project.setProName(rs.getString(4));
+                project.setProStartDate(rs.getString(5));
+                project.setProEndDate(rs.getString(6));
+                project.setProPeo(rs.getBinaryStream(7));
+                project.setProStatus(rs.getInt(8));
+                project.setProSteps(rs.getInt(9));
+                project.setProReqFunds(rs.getInt(10));
+                project.setProFunds(rs.getInt(11));
+
+                relList.add(project);
+
+            }
+
+        } catch (SQLException ee) {
+
+            printSQLException(ee);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+
+        return relList;
+
+    }
+
+    public void uploadPOE(InputStream iS, String clickedID) {
+        
+        String message = null;
+        
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            // constructs SQL statement  
+         //   "Update  [Inventory] set [Item Picture] = ? where [Item Number] = ?"
+            String sql = "UPDATE Project SET propoe = (?) WHERE proID = " + clickedID;
+
+            statement = con.prepareStatement(sql);
+
+            if (iS != null) {
+                // fetches input stream of the upload file for the blob column  
+                statement.setBinaryStream(1, iS);
+               // statement.setString(2, clickedID);
+            }
+            // sends the statement to the database server  
+            int row = statement.executeUpdate();
+            if (row > 0) {
+                message = "Image is uploaded successfully into the Database";
+            }
+            System.out.println("sql fra mapper: " + sql);
+        } catch (SQLException ex) {
+            message = "ERROR: " + ex.getMessage();
+            ex.printStackTrace();
+        }
+
     }
 
     public boolean checkInputPartner(Partner p) {
@@ -632,13 +730,17 @@ public class Mapper {
 
             while (rs.next()) {
 
+                Part tempFilePart = null;
+                InputStream tempStream = null;
                 selProject.setProID(rs.getInt(1));
                 selProject.setProEmpID(rs.getInt(2));
                 selProject.setProParID(rs.getInt(3));
                 selProject.setProName(rs.getString(4));
                 selProject.setProStartDate(rs.getString(5));
                 selProject.setProEndDate(rs.getString(6));
-                selProject.setProPeo(rs.getString(7));
+                
+                selProject.setProPeo(null);
+                
                 selProject.setProStatus(rs.getInt(8));
                 selProject.setProSteps(rs.getInt(9));
                 selProject.setProReqFunds(rs.getInt(10));

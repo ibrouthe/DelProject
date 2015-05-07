@@ -77,11 +77,9 @@
             <p>Project Name:</p><input type="text" name="proName" value="" size="50" />
             <p>Dell Employee ID:</p><input type="text" name="proEmpID" value="" size="50" /><label> if unknown type 0</label>            
             <p>Partner Id:</p><input type="text" name="proParID" value="" size="50" />
-            <p>Project Id:</p><input type="text" name="proID" value="" size="50" />
             <p>Project start date:</p><input type="text" name="proStartDate" value="" size="50" />
             <p>Project end date:</p><input type="text" name="proEndDate" value="" size="50" />
             <p>Funds Request:</p><input type="text" name="proReqFunds" value="" size="50" />
-            <p>Project Status:</p><input type="text" name="proStatus" value="" size="50" />
             <input type="hidden" name="command" value="projectForm" />
             <br><br>
             <input type="submit" value="Submit" name="projectsubmit" />
