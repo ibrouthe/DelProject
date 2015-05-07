@@ -60,13 +60,21 @@
         <header id="header">
             <hgroup>
                 <h1 class="site_title"><a href="index.jsp">Dell Partner Management</a></h1>
-                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="http://www.medialoot.com">View Site</a></div>
+                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
             </hgroup>
         </header> <!-- end of header bar -->
 
         <section id="secondary_bar">
             <div class="user">
-                <p>John Doe (<a href="#">3 Messages</a>)</p>
+                <p> <%
+                    String username = (String) session.getAttribute("name");
+
+                    out.println(username);
+
+                    
+                    
+                    
+                    %> (<a href="#">3 Messages</a>)</p>
                 <!-- <a class="logout_user" href="#" title="Logout">Logout</a> -->
             </div>
             <div class="breadcrumbs_container">
@@ -75,12 +83,16 @@
         </section><!-- end of secondary bar -->
 
         <aside id="sidebar" class="column">
-            <form class="quick_search">
-                <input type="text" value="Quick Search" onfocus="if (!this._haschanged) {
+             <form class="quick_search" action="PageControl" id="form">
+                <input type="text" name="searchField" value="Quick Search" onfocus="if (!this._haschanged) {
                             this.value = ''
                         }
                         ;
                         this._haschanged = true;">
+                <input type="hidden" name="command" value="search" />
+                
+                
+                
             </form>
             <hr/>
             <h3>Projects</h3>
@@ -100,13 +112,11 @@
 
             </ul>
 
-            <<h3>Admin</h3>
+            <h3>Admin</h3>
             <ul class="toggle">
                 <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
                 <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
 
-            </ul>h3>Admin</h3>
-            <ul class="toggle">
 
             </ul>
 
@@ -127,10 +137,11 @@
             String CVR = selPar.getCVR();
             String parPass = selPar.getParPass();
             int parFunds = selPar.getParFunds();
+            String contactName = selPar.getContactName();
             
             Partner p = new Partner(
                     parID, parName, parAdress, parPhone, eMail,
-                    CVR, parPass, parFunds);
+                    CVR, parPass, parFunds, contactName);
             request.getSession().removeAttribute("clickedPartner");
 
         %>
@@ -142,7 +153,7 @@
 
                     <div id="list">
 
-                        
+                        <h5>Contact Name: <%out.println(p.getContactName());%></h5>
                         <h5>Address: <%out.println(p.getParAdress());%></h5>
                         <h5>Phone: <%out.println(p.getParPhone());%></h5>
                         <h5>eMail: <%out.println(p.geteMail());%></h5>

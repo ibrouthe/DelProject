@@ -7,6 +7,7 @@
 package datasource;
 
 import domain.AppController;
+import domain.DateTime;
 import domain.Employee;
 import domain.Partner;
 import domain.Project;
@@ -30,6 +31,7 @@ import javax.servlet.http.Part;
  */
 public class Mapper {
 
+    DateTime dt;
     UserLogin ul;
     PreparedStatement statement;
     ResultSet rs;
@@ -92,11 +94,198 @@ public class Mapper {
 
     }
 
-    public ArrayList<Partner> listPartner() {
+    public ArrayList<Project> listParProjects(String email) {
+
+        ul = new UserLogin();
+
+        getParID(email);
+        String parID = ul.getId();
+
+        ArrayList<Project> list = new ArrayList<Project>();
+
+        String SQLString = "SELECT * FROM Project WHERE proparid LIKE '" + parID + "'";
+        statement = null;
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+
+            statement = con.prepareStatement(SQLString);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+
+                Project project = new Project();
+
+                project.setProID(rs.getInt(1));
+                project.setProEmpID(rs.getInt(2));
+                project.setProParID(rs.getInt(3));
+                project.setProName(rs.getString(4));
+                project.setProStartDate(rs.getString(5));
+                project.setProEndDate(rs.getString(6));
+                //project.setProPeo(rs.getString(7));
+                project.setProStatus(rs.getInt(8));
+                project.setProSteps(rs.getInt(9));
+                project.setProReqFunds(rs.getInt(10));
+                project.setProFunds(rs.getInt(11));
+
+                list.add(project);
+
+            }
+
+        } catch (SQLException ee) {
+
+            printSQLException(ee);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+
+        return list;
+
+    }
+
+    public ArrayList<Project> searchProjects(String searchField) {
+        ArrayList<Project> list = new ArrayList<Project>();
+
+        String search = searchField;
+
+        String sql = "SELECT * FROM PROJECT WHERE UPPER(PRONAME) LIKE UPPER('%" + search + "%')";
+
+        statement = null;
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+
+            statement = con.prepareStatement(sql);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+
+                Project project = new Project();
+
+                project.setProID(rs.getInt(1));
+                project.setProEmpID(rs.getInt(2));
+                project.setProParID(rs.getInt(3));
+                project.setProName(rs.getString(4));
+                project.setProStartDate(rs.getString(5));
+                project.setProEndDate(rs.getString(6));
+                //project.setProPeo(rs.getString(7));
+                project.setProStatus(rs.getInt(8));
+                project.setProSteps(rs.getInt(9));
+                project.setProReqFunds(rs.getInt(10));
+                project.setProFunds(rs.getInt(11));
+
+                list.add(project);
+
+            }
+
+        } catch (SQLException ee) {
+
+            printSQLException(ee);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+
+        return list;
+    }
+
+    public ArrayList<Project> searchParProjects(String searchField, String email) {
+
+        ul = new UserLogin();
+
+        getParID(email);
+
+        String parID = ul.getId();
+
+        ArrayList<Project> list = new ArrayList<Project>();
+
+        String search = searchField;
+
+        String sql = "SELECT * FROM PROJECT WHERE PROPARID LIKE '" + parID + "' AND UPPER(PRONAME) LIKE UPPER('%" + search + "%')";
+
+        statement = null;
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+
+            statement = con.prepareStatement(sql);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+
+                Project project = new Project();
+
+                project.setProID(rs.getInt(1));
+                project.setProEmpID(rs.getInt(2));
+                project.setProParID(rs.getInt(3));
+                project.setProName(rs.getString(4));
+                project.setProStartDate(rs.getString(5));
+                project.setProEndDate(rs.getString(6));
+                //project.setProPeo(rs.getString(7));
+                project.setProStatus(rs.getInt(8));
+                project.setProSteps(rs.getInt(9));
+                project.setProReqFunds(rs.getInt(10));
+                project.setProFunds(rs.getInt(11));
+
+                list.add(project);
+
+            }
+
+        } catch (SQLException ee) {
+
+            printSQLException(ee);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+
+        return list;
+    }
+
+    public ArrayList<Partner> searchPartner(String searchField) {
 
         ArrayList<Partner> list = new ArrayList<Partner>();
 
-        String SQLString = "SELECT * FROM Partner";
+        String search = searchField;
+
+        String SQLString = "SELECT * FROM PARTNER WHERE UPPER(PARNAME)  LIKE UPPER('%" + search + "%')";
         statement = null;
 
         try (Connection con = DBconnector.getInstance().getConnection()) {
@@ -116,6 +305,8 @@ public class Mapper {
                 partner.seteMail(rs.getString(5));
                 partner.setCVR(rs.getString(6));
                 partner.setParFunds(rs.getInt(7));
+
+                partner.setContactName(rs.getString(9));
 
                 list.add(partner);
 
@@ -145,16 +336,163 @@ public class Mapper {
 
     }
 
-    public boolean addPartner(int parId, String parName, String parAdress, String parPhone,
-            String eMail, String CVR, String parPass, int parFunds) {
+    public ArrayList<Employee> searchEmployee(String searchField) {
 
-        Partner p = new Partner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+        ArrayList<Employee> list = new ArrayList<Employee>();
+        String search = searchField;
+
+        String sql = "SELECT * FROM EMPLOYEE WHERE UPPER(EMPNAME) LIKE UPPER('%" + search + "%')";
+        PreparedStatement statement = null;
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+
+            statement = con.prepareStatement(sql);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+
+                Employee employee = new Employee();
+
+                employee.setEmpID(rs.getInt(1));
+                employee.setEmpName(rs.getString(2));
+                employee.setEmpStatus(rs.getInt(3));
+                employee.setEmpMail(rs.getString(4));
+
+                list.add(employee);
+
+            }
+
+        } catch (SQLException ee) {
+
+            printSQLException(ee);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+
+        return list;
+
+    }
+
+    public void parTimeStamp(String email) {
+        dt = new DateTime();
+        ul = new UserLogin();
+
+        getParID(email);
+
+        String time = dt.timeStamp();
+        System.out.println("time souted: " + time);
+        String parId = ul.getId();
+
+        String sql = "UPDATE partner SET lastOnline = '" + time + "' WHERE parID LIKE '" + parId + "'";
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+            statement = con.prepareStatement(sql);
+
+            rs = statement.executeQuery();
+
+        } catch (SQLException ee) {
+
+            printSQLException(ee);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+        }
+
+    }
+
+    public ArrayList<Partner> listPartner() {
+
+        ArrayList<Partner> list = new ArrayList<Partner>();
+
+        String SQLString = "SELECT * FROM Partner";
+        statement = null;
+
+        try (Connection con = DBconnector.getInstance().getConnection()) {
+
+            statement = con.prepareStatement(SQLString);
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+
+                Partner partner = new Partner();
+
+                partner.setParID(rs.getInt(1));
+                partner.setParName(rs.getString(2));
+                partner.setParAdress(rs.getString(3));
+                partner.setParPhone(rs.getString(4));
+                partner.seteMail(rs.getString(5));
+                partner.setCVR(rs.getString(6));
+                partner.setParFunds(rs.getInt(7));
+                partner.setContactName(rs.getString(9));
+		
+                list.add(partner);
+
+            }
+
+        } catch (SQLException ee) {
+
+            printSQLException(ee);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (Exception e) {
+            };
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+            };
+
+        }
+
+        return list;
+
+    }
+
+    public boolean addPartner(int parId, String parName, String parAdress, String parPhone,
+            String eMail, String CVR, String parPass, int parFunds, String contactName) {
+	dt = new DateTime();
+	String time = dt.timeStamp();
+
+        Partner p = new Partner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
         if (checkInputPartner(p) == true) {
             int rowsInserted = 0;
 
             String sql = "INSERT INTO Partner VALUES(parSeq.nextval,'" + p.getParName() + "','" + p.getParAdress() + "','"
-                    + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds() + ")";
-
+                    + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds() + ",'" + time + "','"  + p.getContactName() + "')";
+	    
+	    
             PreparedStatement statement1 = null;
             PreparedStatement statement2 = null;
 
@@ -169,7 +507,7 @@ public class Mapper {
                 statement1 = con.prepareStatement(SQLString);
 
                 rs = statement1.executeQuery();
-
+		
                 while (rs.next()) {
 
                     createdParID = rs.getInt(1);
@@ -185,6 +523,8 @@ public class Mapper {
             } catch (SQLException ee) {
 
                 printSQLException(ee);
+		System.out.println("Fail1 in Partner details - addPartner");
+		System.out.println(ee.getMessage());
 
             } finally {
                 try {
@@ -192,13 +532,16 @@ public class Mapper {
                         rs.close();
                     }
                 } catch (Exception e) {
-
+		    System.out.println("Fail2 in Partner details - addPartner");
+		    System.out.println(e.getMessage());
                 };
                 try {
                     if (statement != null) {
                         statement.close();
                     }
                 } catch (Exception e) {
+		    System.out.println("Fail3 in Partner details - addPartner");
+		    System.out.println(e.getMessage());
                 };
             }
             return rowsInserted == 1;
@@ -398,6 +741,8 @@ public class Mapper {
 
     //1st method called by checkPW(). Using the user's email to find his ID in the database.
     public void getParID(String email) {
+
+        System.out.println("And the lucky number slevin issss: " + email);
         String sql = "SELECT parid FROM partner WHERE paremail LIKE '" + email + "'";
         PreparedStatement statement = null;
         String parID = null;
@@ -430,7 +775,7 @@ public class Mapper {
             } catch (Exception e) {
             };
         }
-
+        System.out.println("GetParID(); DOING: parID set as: " + parID);
         ul.setId(parID);
     }
 
@@ -494,6 +839,7 @@ public class Mapper {
 
             if (pw.equalsIgnoreCase(dbPass)) {
 
+                ul.setEmail(user);
                 ul.setPassword(null);
                 ul.setRole("partner");
 
@@ -529,7 +875,7 @@ public class Mapper {
 
     public void getParName(String email) {
 
-        String sql = "SELECT PARNAME FROM PARTNER WHERE PAREMAIL LIKE '" + email + "'";
+        String sql = "SELECT CONTACTNAME FROM PARTNER WHERE PAREMAIL LIKE '" + email + "'";
 
         PreparedStatement statement = null;
 
@@ -571,6 +917,7 @@ public class Mapper {
     }
 
     public void getEmpID(String email) {
+        ul.setEmail(email);
         String sql = "SELECT empid FROM employee WHERE empmail LIKE '" + email + "'";
         PreparedStatement statement = null;
         String empID = null;
@@ -715,6 +1062,11 @@ public class Mapper {
         return role;
     }
 
+    public String returnEmail() {
+        String email = ul.getEmail();
+        return email;
+    }
+
     public Project getSelectedProject(String ClickedID) {
 
         System.out.println("ClickedID fra ProjectMapper: " + ClickedID);
@@ -825,8 +1177,8 @@ public class Mapper {
                 selPartner.setParPhone(rs.getString(4));
                 selPartner.seteMail(rs.getString(5));
                 selPartner.setCVR(rs.getString(6));
-                selPartner.setParPass(rs.getString(7));
-                selPartner.setParFunds(rs.getInt(8));
+                selPartner.setParFunds(rs.getInt(7));
+                selPartner.setContactName(rs.getString(9));
 
                 System.out.println("DEBUGGER " + selPartner);
 
@@ -936,7 +1288,7 @@ public class Mapper {
                 employee.setEmpName(rs.getString(2));
                 employee.setEmpStatus(rs.getInt(3));
                 employee.setEmpMail(rs.getString(4));
-                employee.setEmpPass(rs.getString(5));
+                
 
                 System.out.println("DEBUGGER " + employee);
                 list.add(employee);
@@ -983,10 +1335,10 @@ public class Mapper {
             while (rs.next()) {
 
                 selEmployee.setEmpID(rs.getInt(1));
-                selEmployee.setEmpName(rs.getString(4));
-                selEmployee.setEmpStatus(rs.getInt(8));
-                selEmployee.setEmpMail(rs.getString(5));
-                selEmployee.setEmpPass(rs.getString(6));
+                selEmployee.setEmpName(rs.getString(2));
+                selEmployee.setEmpStatus(rs.getInt(3));
+                selEmployee.setEmpMail(rs.getString(4));
+                selEmployee.setEmpPass(rs.getString(5));
 
                 System.out.println("DEBUGGER " + selEmployee);
 

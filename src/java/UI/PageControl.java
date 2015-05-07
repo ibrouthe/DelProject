@@ -51,9 +51,9 @@ public class PageControl extends HttpServlet {
         appcon = new AppController();
 
         String command = request.getParameter("command");
-        System.out.println("from pageControl: " + command);
 
         switch (command) {
+            
             case "listProjects":
 
                 ArrayList<Project> showlist;
@@ -111,9 +111,27 @@ public class PageControl extends HttpServlet {
                 appcon.uploadPOE(iS, clickedID);
                 System.out.println("Vi kom sikkert igennem uploadPOE case!!!");
                 response.sendRedirect("PageControl?command=listRelevantProjects");
-                break;           
-            
+                break;             
+                
+                
+            case "listParProjects":
+                String parEmail = (String) session.getAttribute("email");
+                
+                ArrayList<Project> ownlist;
 
+                ownlist = appcon.listParProjects(parEmail);
+                
+                session = request.getSession();
+                session.setAttribute("returnlist", ownlist);
+
+                try {
+                    response.sendRedirect("listProjects.jsp");
+                } catch (Exception ee) {
+                }
+
+                break;
+
+                
             case "listPartners":
 
                 ArrayList<Partner> showpartnerlist;
@@ -131,6 +149,40 @@ public class PageControl extends HttpServlet {
 
                 break;
 
+            case "search":
+                
+                
+                ArrayList<Project> searchParProjects;
+                ArrayList<Project> searchProjects;
+                ArrayList<Partner> searchPartners;
+                ArrayList<Employee> searchEmployees;
+                
+                
+                String pEmail = (String) session.getAttribute("email");
+                String searchField = request.getParameter("searchField");
+                //String searchField = "silas";
+                
+                searchParProjects = appcon.searchParProjects(searchField, pEmail);
+                searchProjects = appcon.searchProjects(searchField);
+                searchPartners = appcon.searchPartners(searchField);
+                searchEmployees = appcon.searchEmployees(searchField);
+                
+                session = request.getSession();
+                
+                session.setAttribute("searchParProjects", searchParProjects);
+                session.setAttribute("searchProjects", searchProjects);
+                session.setAttribute("searchPartners", searchPartners);
+                session.setAttribute("searchEmployees", searchEmployees);
+                
+                  try {
+                    response.sendRedirect("Search.jsp");
+                } catch (Exception ee) {
+
+                }
+
+                break;
+                
+                
             case "partnerForm":
 
                 request.getSession().setAttribute("message", "you have registrated succesfully");
@@ -143,9 +195,10 @@ public class PageControl extends HttpServlet {
                 String eMail = request.getParameter("eMail");
                 String CVR = request.getParameter("CVR");
                 int parFunds = 0; // Dummy input
+		String contactName = request.getParameter("contactName");
 
                 if (parPass.equals(parPass1)) {
-                    boolean ap = appcon.createNewPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds);
+                    boolean ap = appcon.createNewPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
                     if (ap) {
                         response.sendRedirect("Dashboard.jsp");
                     } else {
@@ -191,7 +244,7 @@ public class PageControl extends HttpServlet {
                 appcon.updateStep(updatedP);
                 updatedP = appcon.listSelectedProject("" + selPro.getProID());
                 request.getSession().setAttribute("clickedProject", updatedP);
-               // response.sendRedirect("selectedProject.jsp");
+                response.sendRedirect("selectedProject.jsp");
 
                 break;
 
@@ -237,10 +290,12 @@ public class PageControl extends HttpServlet {
                 session = request.getSession();
                 String pname = appcon.returnName();
                 String prole = appcon.returnRole();
-
+                String pmail = appcon.returnEmail();
+                
                 session.setAttribute("role", prole);
                 session.setAttribute("name", pname);
-
+                session.setAttribute("email", pmail);
+                
                 return;
 
             case "employeeLogin":
@@ -261,9 +316,12 @@ public class PageControl extends HttpServlet {
                 session = request.getSession();
                 String ename = appcon.returnName();
                 String erole = appcon.returnRole();
-
+                String email = appcon.returnEmail();
+                
                 session.setAttribute("role", erole);
                 session.setAttribute("name", ename);
+                session.setAttribute("email", email);
+                
                 return;
 
             case "selectedProject":
@@ -338,7 +396,8 @@ public class PageControl extends HttpServlet {
                 return;
 
             case "logout":
-
+                String logoutEmail = (String) session.getAttribute("email");
+                appcon.parTimeStamp(logoutEmail);
                 session.invalidate();
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
 

@@ -60,7 +60,7 @@
         <header id="header">
             <hgroup>
                 <h1 class="site_title"><a href="index.jsp">Dell Partner Management</a></h1>
-                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="http://www.medialoot.com">View Site</a></div>
+                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
             </hgroup>
         </header> <!-- end of header bar -->
 
@@ -75,12 +75,16 @@
         </section><!-- end of secondary bar -->
 
         <aside id="sidebar" class="column">
-            <form class="quick_search">
-                <input type="text" value="Quick Search" onfocus="if (!this._haschanged) {
+             <form class="quick_search" action="PageControl" id="form">
+                <input type="text" name="searchField" value="Quick Search" onfocus="if (!this._haschanged) {
                             this.value = ''
                         }
                         ;
                         this._haschanged = true;">
+                <input type="hidden" name="command" value="search" />
+                
+                
+                
             </form>
             <hr/>
             <h3>Projects</h3>
@@ -124,7 +128,7 @@
             
             Employee em = new Employee(
                     empID, empName, status, eMail, empPass);
-            request.getSession().removeAttribute("clickedEmployee");
+            //request.getSession().removeAttribute("clickedEmployee");
 
         %>
 

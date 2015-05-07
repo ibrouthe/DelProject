@@ -4,6 +4,8 @@
         Author     : Gruppe 2 Silas, Thomas, Christian, Martin, Ib
 --%>
 
+<%@page import="domain.Employee"%>
+<%@page import="domain.Partner"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="domain.Project"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -72,8 +74,7 @@
         <header id="header">
             <hgroup>
                 <h1 class="site_title"><a href="Dashboard.jsp">Dell Partner Management</a></h1>
-                <h2 class="section_title">Dashboard</h2>        
-                <div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
+                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
             </hgroup>
         </header> <!-- end of header bar -->
 
@@ -100,9 +101,9 @@
                         ;
                         this._haschanged = true;">
                 <input type="hidden" name="command" value="search" />
-                
-                
-                
+
+
+
             </form>
             <hr/>
 
@@ -145,12 +146,9 @@
             <ul class="toggle">
 
             </ul>
-            <div id="adminTab" <%                  if (role.equalsIgnoreCase("partner")) {
+            <div id="adminTab" <% if (role.equalsIgnoreCase("partner")) {
                     out.println("style=\"display:none\"");
-                }
-
-
-                 %>>
+                    }  %>>
                 <h3>Admin</h3>
                 <ul class="toggle">
                     <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
@@ -170,13 +168,18 @@
             <h4 class="alert_info">7 projects have been edited since your last login.</h4>
 
             <article class="module width_full">
-                <header><h3>Projects in Database</h3></header>
-                <div class="module_content">
+                <header><h3>Search Results:</h3></header>
+                
+                <div class="module_content" <% if (role.equalsIgnoreCase("employee")) {
+                    out.println("style=\"display:none\"");
+                    }  %>>
 
-                    <% ArrayList<Project> newlist = new ArrayList();
+                    <%
+                        ArrayList<Project> searchParProjects = (ArrayList<Project>) session.getAttribute("searchParProjects");
+                        
+                    if (searchParProjects != null && searchParProjects.size() > 0) {
 
-                        newlist = (ArrayList<Project>) session.getAttribute("returnlist");
-                    %><table class="table-"  border="1" width="850"> <thead>
+                    %><table class="table-condensed"  border="1" width="850"> <thead>
                             <tr>
                                 <th>Select</th>
                                 <th>ID    </th> 
@@ -188,20 +191,150 @@
                             </tr> 
                         </thead> <tbody>
 
-                            <%
-                                for (Project temp : newlist) {
+                            <%                                for (Project proTemp : searchParProjects) {
                             %>
                             <tr>
-                                <td><a href="PageControl?command=selectedProject&param1=<%out.print(temp.getProID());%>">View Project</a></td> 
+                                <td><a href="PageControl?command=selectedProject&param1=<%out.print(proTemp.getProID());%>">View Project</a></td> 
                                 <%//System.out.println(temp.getProID());%>
-                                <td><%out.print(temp.getProID());%></td> 
-                                <td><%out.print(temp.getProName());%></td> 
-                                <td><%out.print(temp.getProStartDate());%></td> 
-                                <td><%out.print(temp.getProEndDate());%></td>
-                                <td><%out.print(temp.getProSteps());%></td>
-                                <td><%out.print(temp.getProStatus());%></td>
+                                <td><%out.print(proTemp.getProID());%></td> 
+                                <td><%out.print(proTemp.getProName());%></td> 
+                                <td><%out.print(proTemp.getProStartDate());%></td> 
+                                <td><%out.print(proTemp.getProEndDate());%></td>
+                                <td><%out.print(proTemp.getProSteps());%></td>
+                                <td><%out.print(proTemp.getProStatus());%></td>
                             </tr>  
-                            <%}%></tbody> </table>
+
+                            <%}} %>
+                        </tbody> </table>
+
+                </div>
+
+                
+                <div class="module_content" <% if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                    }  %>>
+
+                    <%
+                        ArrayList<Project> searchProjects = (ArrayList<Project>) session.getAttribute("searchProjects");
+                        
+                    if (searchProjects != null && searchProjects.size() > 0) {
+
+                    %><table class="table-condensed"  border="1" width="850"> <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>ID    </th> 
+                                <th>Name      </th> 
+                                <th>Start Date</th> 
+                                <th>End Date  </th>
+                                <th>Step  </th>
+                                <th>Status</th>
+                            </tr> 
+                        </thead> <tbody>
+
+                            <%                                for (Project proTemp : searchProjects) {
+                            %>
+                            <tr>
+                                <td><a href="PageControl?command=selectedProject&param1=<%out.print(proTemp.getProID());%>">View Project</a></td> 
+                                <%//System.out.println(temp.getProID());%>
+                                <td><%out.print(proTemp.getProID());%></td> 
+                                <td><%out.print(proTemp.getProName());%></td> 
+                                <td><%out.print(proTemp.getProStartDate());%></td> 
+                                <td><%out.print(proTemp.getProEndDate());%></td>
+                                <td><%out.print(proTemp.getProSteps());%></td>
+                                <td><%out.print(proTemp.getProStatus());%></td>
+                            </tr>  
+
+                            <%}} %>
+                        </tbody> </table>
+
+                </div>
+
+
+
+
+
+
+                <div class="module_content" <% if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                    }  %>>
+
+                    <%
+
+                        ArrayList<Partner> searchPartners = (ArrayList<Partner>) session.getAttribute("searchPartners");
+
+                        if (searchPartners != null && searchPartners.size() > 0) {
+
+                    %><table class="table-condensed" border="1" width="850"> <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>ID    </th> 
+                                <th>Name      </th>
+                                <th>Contact Name      </th>
+                                <th>Phone  </th> 
+                                <th>CVR  </th>
+                                <th>email  </th>
+
+                            </tr> 
+                        </thead> <tbody>
+
+                            <%                                for (Partner parTemp : searchPartners) {
+                            %>
+                            <tr>
+
+                                <td><a href="PageControl?command=selectedPartner&param2=<%out.print(parTemp.getParID());%>">View Partner</a></td>
+                                <td><%out.print(parTemp.getParID());%></td> 
+                                <td><%out.print(parTemp.getParName());%></td>
+                                <td><%out.print(parTemp.getContactName());%></td>
+                                <td><%out.print(parTemp.getParPhone());%></td> 
+                                <td><%out.print(parTemp.getCVR());%></td>
+                                <td><%out.print(parTemp.geteMail());%></td>
+
+                            </tr>  
+
+                            <%}
+                                }%>
+                        </tbody> </table>
+                </div>
+
+
+
+
+                <div class="module_content" <% if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                    }  %>>
+
+                    <%
+
+                        ArrayList<Employee> searchEmployees = (ArrayList<Employee>) session.getAttribute("searchEmployees");
+                        if (searchEmployees != null && searchEmployees.size() > 0) {
+                    %><table class="table-condensed" border="1" width="850"> <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>ID    </th> 
+                                <th>Name      </th> 
+                                <th>email  </th>
+                                <th>Status  </th>
+
+
+                            </tr> 
+                        </thead> <tbody>
+
+                            <%
+                                for (Employee empTemp : searchEmployees) {
+                            %>
+                            <tr>
+
+                                <td><a href="PageControl?command=selectedEmployee&param3=<%out.print(empTemp.getEmpID());%>">View Employee</a></td>
+                                <td><%out.print(empTemp.getEmpID());%></td> 
+                                <td><%out.print(empTemp.getEmpName());%></td> 
+                                <td><%out.print(empTemp.getEmpMail());%></td>
+                                <td><%out.print(empTemp.getEmpStatus());%></td>
+                            </tr>  
+
+
+                            <%}
+                                }%>
+                        </tbody> </table>
 
 
                 </div>

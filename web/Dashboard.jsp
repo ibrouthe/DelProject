@@ -12,11 +12,15 @@
 
 <!doctype html>
 <html lang="en">
-    
+    <%String role = (String) session.getAttribute("role");%>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
     <head>
         <meta charset="utf-8"/>
         <title>Dell Partner Programme</title>
-        
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
@@ -24,7 +28,7 @@
         <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        
+
         <script src="js/jquery-1.5.2.min.js" type="text/javascript"></script>
         <script src="js/hideshow.js" type="text/javascript"></script>
         <script src="js/jquery.tablesorter.min.js" type="text/javascript"></script>
@@ -70,18 +74,23 @@
         <header id="header">
             <hgroup>
                 <h1 class="site_title"><a href="Dashboard.jsp">Dell Partner Management</a></h1>
-                <h2 class="section_title">Dashboard</h2><div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
+                <h2 class="section_title"></h2>
+                    <div class="btn_view_site"><a href="PageControl?command=logout">Logout</a></div>
             </hgroup>
         </header> <!-- end of header bar -->
 
         <section id="secondary_bar">
+
             <div class="user">
                 <p> <%
                     String username = (String) session.getAttribute("name");
 
                     out.println(username);
 
-                    %> (<a href="#">3 Messages</a>)</p>
+                    
+                    
+                    
+                    %></p>
                 <!-- <a class="logout_user" href="#" title="Logout">Logout</a> -->
             </div>
             <div class="breadcrumbs_container">
@@ -90,49 +99,69 @@
         </section><!-- end of secondary bar -->
 
         <aside id="sidebar" class="column">
-            <form class="quick_search">
-                <input type="text" value="Quick Search" onfocus="if (!this._haschanged) {
+           <form class="quick_search" action="PageControl" id="form">
+                <input type="text" name="searchField" value="Quick Search" onfocus="if (!this._haschanged) {
                             this.value = ''
                         }
                         ;
                         this._haschanged = true;">
+                <input type="hidden" name="command" value="search" />
+                
+                
+                
             </form>
             <hr/>
-            <h3>Projects</h3>
-            <ul class="toggle">
-                <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
-                <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
-            </ul>
-            
-            <div id="partnerTab" <% 
-            String role = (String)session.getAttribute("role");
-            
-            if(role.equalsIgnoreCase("partner")){
-            out.println("style=\"display:none\"");
-            }
-            
-                    
-            %>>
-            <h3>Partners</h3>
-            <ul class="toggle">
-                <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
-                <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
 
-            </ul>
+            <div id="projectsDiv">
+                <h3>Projects</h3>
+
+                <ul class="toggle">
+
+                    <li class="icn_new_article"><a href="newProjektForm.jsp">Add New Project</a></li>
+
+
+                    <%                        if (role.equalsIgnoreCase("partner")) {
+                    %>
+                    <li class="icn_folder"><a href="PageControl?command=listParProjects">View Projects</a><input type="hidden" name="command" value="listParProjects"></li>
+                        <%
+                        } else if (role.equalsIgnoreCase("employee")) {%>
+                    <li class="icn_folder"><a href="PageControl?command=listProjects">View Projects</a><input type="hidden" name="command" value="listProjects"></li>
+                        <% }%>
+
+                </ul></div>
+
+            <div id="partnerTab" <%
+
+                if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                }
+
+
+                 %>>
+                <h3>Partners</h3>
+                <ul class="toggle">
+                    <li class="icn_add_user"><a href="newPartnerForm.jsp">Add New Partner</a></li>
+                    <li class="icn_profile"><a href="PageControl?command=listPartners">View Partners</a><input type="hidden" name="command" value="listPartners"></li>
+
+                </ul>
             </div>
 
             <h3>StatisticS</h3>
             <ul class="toggle">
 
             </ul>
+            <div id="adminTab" <%                if (role.equalsIgnoreCase("partner")) {
+                    out.println("style=\"display:none\"");
+                }
 
 
-            <h3>Admin</h3>
-            <ul class="toggle">
-                <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
-                <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
+                 %>>
+                <h3>Admin</h3>
+                <ul class="toggle">
+                    <li class="icn_add_user"><a href="newEmployeeForm.jsp">Add New Employee</a></li>
+                    <li class="icn_profile"><a href="PageControl?command=listEmployees">View Employees</a><input type="hidden" name="command" value="listPartners"></li>
 
-            </ul>
+                </ul></div>
 
 
 

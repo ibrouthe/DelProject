@@ -19,8 +19,9 @@ public class Partner {
     String CVR;
     String parPass;
     int parFunds;
+    String contactName;
 
-    public Partner(int parID, String parName, String parAdress, String parPhone, String eMail, String CVR, String parPass, int parFunds) {
+    public Partner(int parID, String parName, String parAdress, String parPhone, String eMail, String CVR, String parPass, int parFunds, String contactName) {
 	this.parID = parID;
 	this.parName = parName;
 	this.parAdress = parAdress;
@@ -29,6 +30,15 @@ public class Partner {
 	this.CVR = CVR;
 	this.parPass = parPass;
 	this.parFunds = parFunds;
+	this.contactName = contactName;
+    }
+
+    public String getContactName() {
+	return contactName;
+    }
+
+    public void setContactName(String contactName) {
+	this.contactName = contactName;
     }
 
     public String getParPhone() {
