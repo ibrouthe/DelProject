@@ -221,7 +221,7 @@ public class AppController {
             switch (currentStat) {
                 //needs approval
                 case 0: {
-                    newStep = 1;
+                    newStep = 2;
                     break;
                 }
                 //active

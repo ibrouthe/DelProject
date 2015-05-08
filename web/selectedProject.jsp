@@ -16,10 +16,10 @@
     <head>
         <meta charset="utf-8"/>
         <title>Dell Partner Programme</title>
-
+        
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
-
+        
 
         <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen" />
         <!--[if lt IE 9]>
@@ -231,11 +231,11 @@
                     <%
                         if (proStatus == 0) {%>
                     <form name="Dismissed" action="PageControl" id="approval">                          
-                        <button type="submit" name="command" value="approve"> Approve </button>
+                        <button type="submit" name="command" value="approve" class="standard green"> Approve </button>
                         <input type="hidden" value="active" name="changeStatus">        
                     </form>
                     <form name="Approved" action="PageControl" id="approval">
-                        <button type="submit" name="command" value="approve"> Dismiss </button>
+                        <button type="submit" name="command" value="approve" class="standard red"> Dismiss </button>
                         <input type="hidden" value="inactive" name="changeStatus">
                         <br>
                     </form>

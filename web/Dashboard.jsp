@@ -250,7 +250,7 @@
                                 <td><%out.print(temp.getProName());%></td> 
                                 <td><%out.print(temp.getProStartDate());%></td> 
                                 <td><%out.print(temp.getProEndDate());%></td>
-                                <td><%out.print(temp.getProSteps());%></td>
+                                <td <%if(temp.getProSteps()== 2 || temp.getProSteps()== 5){ %>id="step25"<%} else if (temp.getProSteps()== 3 || temp.getProSteps()== 6){%>class="step36"<%} %>><%out.print(temp.getProSteps());%></td>
                                 <td><%out.print(temp.getProStatus());%></td>
                             </tr>  
                             <%}%></tbody> </table>
