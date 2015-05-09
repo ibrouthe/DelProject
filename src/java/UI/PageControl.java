@@ -30,11 +30,17 @@ import javax.servlet.http.Part;
 @WebServlet(name = "PageControl", urlPatterns = {"/PageControl"})
 public class PageControl extends HttpServlet {
 
+   
     AppController appcon;
 
     HttpSession session;
 
     Part filePart;
+
+    public PageControl() {
+        
+        appcon = AppController.getInstance();
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,8 +53,6 @@ public class PageControl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        appcon = new AppController();
 
         String command = request.getParameter("command");
 
@@ -292,6 +296,12 @@ public class PageControl extends HttpServlet {
                 String prole = appcon.returnRole();
                 String pmail = appcon.returnEmail();
                 
+           
+                System.out.println(pname);
+                System.out.println(prole);
+                System.out.println(pmail);
+              
+                
                 session.setAttribute("role", prole);
                 session.setAttribute("name", pname);
                 session.setAttribute("email", pmail);
@@ -335,7 +345,7 @@ public class PageControl extends HttpServlet {
                 response.sendRedirect("selectedProject.jsp");
                 return;
 
-            //------------------------
+       
             case "selectedPartner":
 
                 String clickedParID = request.getParameter("param2");

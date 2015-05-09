@@ -5,289 +5,249 @@
  */
 package domain;
 
-import datasource.DBconnector;
+import Interfacees.AppControllerInterface;
+import datasource.DBfacade;
 import datasource.Mapper;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.util.ArrayList;
-import javax.servlet.http.Part;
 
 /**
  * lav ny mapper i constructor
  *
  * @author Pc
  */
-public class AppController {
+public class AppController implements AppControllerInterface {
 
     Mapper mapper;
-    // Mapper mapper = DbMapper.getInstance();
+
+    private static AppController instance; //Singleton
+
+    private DBfacade dbFacade;
 
     public AppController() {
+
+        dbFacade = DBfacade.getInstance();
+
+        
     }
 
-    public AppController(Mapper mapper) {
-        this.mapper = mapper;
+    public static AppController getInstance() {
+        if (instance == null) {
+            instance = new AppController();
+        }
+        return instance;
     }
 
+    @Override
     public ArrayList listAllProjects() {
-
-        mapper = new Mapper();
 
         ArrayList<Project> showlist;
 
-        showlist = mapper.listProject();
+        showlist = dbFacade.listProject();
 
         return showlist;
 
     }
 
+    @Override
     public ArrayList searchProjects(String searchField) {
-        mapper = new Mapper();
 
         ArrayList<Project> searchList;
 
-        searchList = mapper.searchProjects(searchField);
+        searchList = dbFacade.searchProjects(searchField);
 
         return searchList;
 
     }
 
+    @Override
     public ArrayList searchParProjects(String searchField, String email) {
-        mapper = new Mapper();
 
         ArrayList<Project> searchList;
 
-        searchList = mapper.searchParProjects(searchField, email);
+        searchList = dbFacade.searchParProjects(searchField, email);
 
         return searchList;
 
     }
 
+    @Override
     public ArrayList searchPartners(String searchField) {
-        mapper = new Mapper();
 
         ArrayList<Partner> searchList;
 
-        searchList = mapper.searchPartner(searchField);
+        searchList = dbFacade.searchPartner(searchField);
 
         return searchList;
 
     }
 
+    @Override
     public ArrayList searchEmployees(String searchField) {
-        mapper = new Mapper();
 
         ArrayList<Employee> searchList;
 
-        searchList = mapper.searchEmployee(searchField);
+        searchList = dbFacade.searchEmployee(searchField);
 
         return searchList;
 
     }
 
+    @Override
     public ArrayList listParProjects(String email) {
-
-        mapper = new Mapper();
 
         ArrayList<Project> ownlist;
 
-        ownlist = mapper.listParProjects(email);
+        ownlist = dbFacade.listParProjects(email);
 
         return ownlist;
 
     }
-//Test at du får alle partners ud og at du kun kalder mappereren een gang
 
+    @Override
     public ArrayList listAllPartners() {
-
-        mapper = new Mapper();
 
         ArrayList<Partner> showlist;
 
-        showlist = mapper.listPartner();
+        showlist = dbFacade.listPartner();
 
         return showlist;
 
     }
 
+    @Override
     public boolean createNewPartner(int parId, String parName, String parAdress, String parPhone,
             String eMail, String CVR, String parPass, int parFunds, String contactName) {
 
-        mapper = new Mapper();
-
-        return mapper.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
+        return dbFacade.addPartner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
 
     }
 
+    @Override
     public boolean createNewProject(int proID, int proEmpID, int proParID, String proName, String proStartDate,
             String proEndDate, InputStream proPOE, int proStatus, int proSteps, int proReqFunds, int proFunds) {
 
-        mapper = new Mapper();
-
-        return mapper.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
+        return dbFacade.addProject(proID, proEmpID, proParID, proName, proStartDate, proEndDate, proPOE, proStatus, proSteps, proReqFunds, proFunds);
 
     }
 
-    public void uploadPOE(InputStream iS, String clickedID) {
-
-        mapper = new Mapper();
-
-        mapper.uploadPOE(iS, clickedID);
-
-    }
-
+    @Override
     public boolean checkParPassword(String user, String pw) {
 
-        mapper = new Mapper();
-
-        return mapper.checkParPw(user, pw);
+        return dbFacade.checkParPw(user, pw);
 
     }
 
+    @Override
     public void parTimeStamp(String email) {
-        mapper = new Mapper();
 
-        mapper.parTimeStamp(email);
+        dbFacade.parTimeStamp(email);
     }
 
+    @Override
     public boolean checkEmpPassword(String user, String pw) {
 
-        mapper = new Mapper();
-
-        return mapper.checkEmpPw(user, pw);
+        return dbFacade.checkEmpPw(user, pw);
 
     }
 
+    @Override
     public String returnName() {
 
-        return mapper.returnName();
+        return dbFacade.returnName();
 
     }
 
+    @Override
     public String returnRole() {
 
-        return mapper.returnRole();
+        return dbFacade.returnRole();
 
     }
 
+    @Override
     public String returnEmail() {
-        return mapper.returnEmail();
+        return dbFacade.returnEmail();
     }
 
+    @Override
     public ArrayList listRelevantProjects(String name, String role) {
-
-        mapper = new Mapper();
 
         ArrayList<Project> showRelList;
 
-        showRelList = mapper.listRelevantProjects(name, role);
+        showRelList = dbFacade.listRelevantProjects(name, role);
 
         return showRelList;
 
     }
 
-    public Project listSelectedProject(String ClickedID) {
+    @Override
+    public void uploadPOE(InputStream iS, String clickedID) {
 
-        Mapper mapper = new Mapper();
+        dbFacade.uploadPOE(iS, clickedID);
+
+    }
+
+    @Override
+    public Project listSelectedProject(String ClickedID) {
 
         Project p;
 
-        p = mapper.getSelectedProject(ClickedID);
+        p = dbFacade.getSelectedProject(ClickedID);
 
         return p;
     }
 
+    @Override
     public void approveProject(int proID, int choice) {
 
         Mapper mapper = new Mapper();
 
-        mapper.updateApproveProject(proID, choice);
+        dbFacade.updateApproveProject(proID, choice);
 
     }
 
+    @Override
     public void updateStep(Project currentPro) {
 
-        //metoden her skal ikke være i appController
-        int currentProID = currentPro.getProID();
-        int oldStep = currentPro.getProSteps();
-        int newStep = oldStep;
-        int currentStat = currentPro.getProStatus();
-        InputStream currentPOE = currentPro.getProPeo();    
+        dbFacade.updateStep(currentPro);
 
-        if (currentPOE == null && oldStep > 5) {            
-                newStep = 5;
-            }
-        
-            switch (currentStat) {
-                //needs approval
-                case 0: {
-                    newStep = 2;
-                    break;
-                }
-                //active
-                case 1: {
-                    if (oldStep < 3) {
-                        newStep = 3;
-                    }
-                    break;
-                }
-                //inactive
-                case 2: {
-                    break;
-                }
-                //completed
-                case 3: {
-                    newStep = 7;
-                    break;
-                }
-            }
+    }
 
-            // Metoden som skal være i AppController:
-            Mapper mapper = new Mapper();
-            mapper.updateStep(currentProID, newStep);
-
-        }
-
-    
-
+    @Override
     public Partner listSelectedPartner(String ClickedID) {
-
-        Mapper mapper = new Mapper();
 
         Partner pa;
 
-        pa = mapper.getSelectedPartner(ClickedID);
+        pa = dbFacade.getSelectedPartner(ClickedID);
 
         return pa;
     }
 
+    @Override
     public boolean createNewEmployee(int empId, String empName, int empStatus, String empMail, String empPass) {
 
-        mapper = new Mapper();
-
-        return mapper.addEmployee(empId, empName, empStatus, empMail, empPass);
+        return dbFacade.addEmployee(empId, empName, empStatus, empMail, empPass);
 
     }
 
+    @Override
     public ArrayList listAllEmployees() {
-
-        mapper = new Mapper();
 
         ArrayList<Employee> showlist;
 
-        showlist = mapper.listEmployee();
+        showlist = dbFacade.listEmployee();
 
         return showlist;
 
     }
 
+    @Override
     public Employee listSelectedEmployee(String ClickedID) {
-
-        Mapper mapper = new Mapper();
 
         Employee em;
 
-        em = mapper.getSelectedEmployee(ClickedID);
+        em = dbFacade.getSelectedEmployee(ClickedID);
 
         return em;
     }

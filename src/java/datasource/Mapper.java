@@ -6,23 +6,17 @@
  */
 package datasource;
 
-import domain.AppController;
 import domain.DateTime;
 import domain.Employee;
 import domain.Partner;
 import domain.Project;
 import domain.UserLogin;
-import java.awt.image.BufferedImage;
-import java.beans.Statement;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.servlet.http.Part;
 
 /**
@@ -394,7 +388,7 @@ public class Mapper {
         getParID(email);
 
         String time = dt.timeStamp();
-        System.out.println("time souted: " + time);
+
         String parId = ul.getId();
 
         String sql = "UPDATE partner SET lastOnline = '" + time + "' WHERE parID LIKE '" + parId + "'";
@@ -451,7 +445,7 @@ public class Mapper {
                 partner.setCVR(rs.getString(6));
                 partner.setParFunds(rs.getInt(7));
                 partner.setContactName(rs.getString(9));
-		
+
                 list.add(partner);
 
             }
@@ -482,17 +476,16 @@ public class Mapper {
 
     public boolean addPartner(int parId, String parName, String parAdress, String parPhone,
             String eMail, String CVR, String parPass, int parFunds, String contactName) {
-	dt = new DateTime();
-	String time = dt.timeStamp();
+        dt = new DateTime();
+        String time = dt.timeStamp();
 
         Partner p = new Partner(parId, parName, parAdress, parPhone, eMail, CVR, parPass, parFunds, contactName);
         if (checkInputPartner(p) == true) {
             int rowsInserted = 0;
 
             String sql = "INSERT INTO Partner VALUES(parSeq.nextval,'" + p.getParName() + "','" + p.getParAdress() + "','"
-                    + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds() + ",'" + time + "','"  + p.getContactName() + "')";
-	    
-	    
+                    + p.getParPhone() + "','" + p.geteMail() + "','" + p.getCVR() + "'," + p.getParFunds() + ",'" + time + "','" + p.getContactName() + "')";
+
             PreparedStatement statement1 = null;
             PreparedStatement statement2 = null;
 
@@ -507,7 +500,7 @@ public class Mapper {
                 statement1 = con.prepareStatement(SQLString);
 
                 rs = statement1.executeQuery();
-		
+
                 while (rs.next()) {
 
                     createdParID = rs.getInt(1);
@@ -523,8 +516,6 @@ public class Mapper {
             } catch (SQLException ee) {
 
                 printSQLException(ee);
-		System.out.println("Fail1 in Partner details - addPartner");
-		System.out.println(ee.getMessage());
 
             } finally {
                 try {
@@ -532,16 +523,16 @@ public class Mapper {
                         rs.close();
                     }
                 } catch (Exception e) {
-		    System.out.println("Fail2 in Partner details - addPartner");
-		    System.out.println(e.getMessage());
+
+                    System.out.println(e.getMessage());
                 };
                 try {
                     if (statement != null) {
                         statement.close();
                     }
                 } catch (Exception e) {
-		    System.out.println("Fail3 in Partner details - addPartner");
-		    System.out.println(e.getMessage());
+
+                    System.out.println(e.getMessage());
                 };
             }
             return rowsInserted == 1;
@@ -570,13 +561,6 @@ public class Mapper {
 
                 rowsInserted = statement.executeUpdate();
 
-//                try {
-//                    InputStream is = filePart.getInputStream();
-//                    BufferedImage bi = ImageIO.read(is);
-//                    ImageIO.write(bi, "jpg", new File("C:\\Users\\Ib Routhe\\Dropbox\\coding\\java\\Dell\\images" + filePart.getSubmittedFileName()));
-//                } catch (IOException e) {
-//                    System.out.println(e.getMessage());
-//                }
             } catch (SQLException ee) {
 
                 printSQLException(ee);
@@ -611,14 +595,14 @@ public class Mapper {
             secondStep = 5;
         }
         if (role.equals("partner")) {
-            firstStep = 1;
+            firstStep = 2;
             secondStep = 4;
         }
 
         ArrayList<Project> relList = new ArrayList<Project>();
 
         String SQLString = "SELECT * FROM Project WHERE prosteps = " + firstStep + " OR prosteps = " + secondStep + "";
-        System.out.println("sql String in Mapper -> " + SQLString);
+
         statement = null;
 
         try (Connection con = DBconnector.getInstance().getConnection()) {
@@ -672,12 +656,12 @@ public class Mapper {
     }
 
     public void uploadPOE(InputStream iS, String clickedID) {
-        
+
         String message = null;
-        
+
         try (Connection con = DBconnector.getInstance().getConnection()) {
             // constructs SQL statement  
-         //   "Update  [Inventory] set [Item Picture] = ? where [Item Number] = ?"
+            //   "Update  [Inventory] set [Item Picture] = ? where [Item Number] = ?"
             String sql = "UPDATE Project SET propoe = (?) WHERE proID = " + clickedID;
 
             statement = con.prepareStatement(sql);
@@ -685,14 +669,14 @@ public class Mapper {
             if (iS != null) {
                 // fetches input stream of the upload file for the blob column  
                 statement.setBinaryStream(1, iS);
-               // statement.setString(2, clickedID);
+                // statement.setString(2, clickedID);
             }
             // sends the statement to the database server  
             int row = statement.executeUpdate();
             if (row > 0) {
                 message = "Image is uploaded successfully into the Database";
             }
-            System.out.println("sql fra mapper: " + sql);
+
         } catch (SQLException ex) {
             message = "ERROR: " + ex.getMessage();
             ex.printStackTrace();
@@ -742,7 +726,6 @@ public class Mapper {
     //1st method called by checkPW(). Using the user's email to find his ID in the database.
     public void getParID(String email) {
 
-        System.out.println("And the lucky number slevin issss: " + email);
         String sql = "SELECT parid FROM partner WHERE paremail LIKE '" + email + "'";
         PreparedStatement statement = null;
         String parID = null;
@@ -775,7 +758,7 @@ public class Mapper {
             } catch (Exception e) {
             };
         }
-        System.out.println("GetParID(); DOING: parID set as: " + parID);
+
         ul.setId(parID);
     }
 
@@ -831,7 +814,6 @@ public class Mapper {
             getParName(user);
 
             String dbID = ul.getId();
-            System.out.println("dbID: " + dbID);
 
             getParPW(dbID);
 
@@ -1069,7 +1051,6 @@ public class Mapper {
 
     public Project getSelectedProject(String ClickedID) {
 
-        System.out.println("ClickedID fra ProjectMapper: " + ClickedID);
         String SQLString = "SELECT * FROM Project WHERE proID = " + ClickedID;
         PreparedStatement statement = null;
         Project selProject = new Project();
@@ -1090,15 +1071,13 @@ public class Mapper {
                 selProject.setProName(rs.getString(4));
                 selProject.setProStartDate(rs.getString(5));
                 selProject.setProEndDate(rs.getString(6));
-                
+
                 selProject.setProPeo(null);
-                
+
                 selProject.setProStatus(rs.getInt(8));
                 selProject.setProSteps(rs.getInt(9));
                 selProject.setProReqFunds(rs.getInt(10));
                 selProject.setProFunds(rs.getInt(11));
-
-                System.out.println("DEBUGGER " + selProject);
 
             }
         } catch (SQLException ee) {
@@ -1158,7 +1137,6 @@ public class Mapper {
 
     public Partner getSelectedPartner(String ClickedID) {
 
-        System.out.println("ClickedID fra Mapper: " + ClickedID);
         String SQLString = "SELECT * FROM Partner WHERE parID = " + ClickedID;
         PreparedStatement statement = null;
         Partner selPartner = new Partner();
@@ -1179,8 +1157,6 @@ public class Mapper {
                 selPartner.setCVR(rs.getString(6));
                 selPartner.setParFunds(rs.getInt(7));
                 selPartner.setContactName(rs.getString(9));
-
-                System.out.println("DEBUGGER " + selPartner);
 
             }
         } catch (SQLException ee) {
@@ -1214,7 +1190,7 @@ public class Mapper {
             int rowsInserted = 0;
 
             String sql = "INSERT INTO Employee VALUES(empSeq.nextval,'" + em.getEmpName() + "'," + em.getEmpStatus() + ",'"
-                    + em.getEmpMail() + "','" + em.getEmpPass() + "')";
+                    + em.getEmpMail() + "')";
 
             PreparedStatement statement1 = null;
             PreparedStatement statement2 = null;
@@ -1288,9 +1264,7 @@ public class Mapper {
                 employee.setEmpName(rs.getString(2));
                 employee.setEmpStatus(rs.getInt(3));
                 employee.setEmpMail(rs.getString(4));
-                
 
-                System.out.println("DEBUGGER " + employee);
                 list.add(employee);
 
             }
@@ -1321,7 +1295,6 @@ public class Mapper {
 
     public Employee getSelectedEmployee(String ClickedID) {
 
-        System.out.println("ClickedID fra EmployeeMapper: " + ClickedID);
         String SQLString = "SELECT * FROM Employee WHERE empID = " + ClickedID;
         PreparedStatement statement = null;
         Employee selEmployee = new Employee();
@@ -1339,8 +1312,6 @@ public class Mapper {
                 selEmployee.setEmpStatus(rs.getInt(3));
                 selEmployee.setEmpMail(rs.getString(4));
                 selEmployee.setEmpPass(rs.getString(5));
-
-                System.out.println("DEBUGGER " + selEmployee);
 
             }
         } catch (SQLException ee) {
